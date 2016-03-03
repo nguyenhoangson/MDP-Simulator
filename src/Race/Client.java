@@ -3,6 +3,7 @@ package Race;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.lang.InterruptedException;
 
 public class Client {
 
@@ -14,13 +15,18 @@ public class Client {
     public Client() {
     }
 
-    public static void setUp(String hostName, int portNumber) {
-        if(isForLocalTesting) return;
+    public static boolean setUp(String hostName, int portNumber) {
+
+        boolean isConnected = false;
+//        if(isForLocalTesting) return;
         try {
             socket = new Socket(hostName, portNumber);
+            isConnected = true;
+            return isConnected;
         } catch (Exception e) {
             System.out.println("Socket error: " + e.getMessage());
         }
+        return isConnected;
     }
 
     public static void write(String msg) {
@@ -67,12 +73,29 @@ public class Client {
         return inStr;
     }
 
-    public static void main (String... args) {
+    public static void main (String... args) throws InterruptedException {
         Client testClient = new Client();
-        testClient.setUp(ip, port);
-        testClient.write("Fie, do you copy?");
-        System.out.println("Trying to read from RPi...");
-        String readFromRPi = testClient.read();
-        System.out.println(readFromRPi);
+
+        boolean connection = testClient.setUp(ip,port);
+
+        while(connection == false){
+            connection = testClient.setUp(ip, port);
+        }
+
+        try{
+            Thread.sleep(4000);
+
+            // Only send the message when connection is ready
+            for(int i = 0; i < 10; i++){
+                testClient.write("W\n");
+            }
+
+            System.out.println("Trying to read from RPi...");
+            String readFromRPi = testClient.read();
+            System.out.println(readFromRPi);
+
+        }catch (InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
     }
 }

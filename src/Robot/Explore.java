@@ -20,6 +20,7 @@ import static Map.FileLoader.saveExploreTextFile;
 import Map.MapData;
 import Other.MyTimerListener;
 
+
 public class Explore implements RobotData, MapData {
 
     private MDPRobot robot = null;
@@ -32,14 +33,14 @@ public class Explore implements RobotData, MapData {
     private final MyTimerListener timeLimit;
 
     public Explore(MDPRobot bot, CoveredMap coveredMap, double stepsPerSec, double percentToCover, MyTimerListener listener) {
-    this.robot = bot;
-    this.map = coveredMap;
-
+        this.robot = bot;
+        this.map = coveredMap;
         this.stepsPerSec = stepsPerSec;
         this.percentToCover = percentToCover;
         this.timeLimit = listener;
 
     }
+
     //start  to display exploration
     public void go() {
         Thread thread;
@@ -79,6 +80,7 @@ public class Explore implements RobotData, MapData {
     private boolean isNeededToGetBack(){
         return percentToCover<= robot.getPercentCellCovered() || timeLimit.getTimer() <=0;
     }
+
     //start exploration
     private void startExploration() throws Exception {
         this.robot.senseAll(this.map);
@@ -86,7 +88,7 @@ public class Explore implements RobotData, MapData {
 
    
         List<PathFinder.Node> path = getAStarPath(robot.getPresetWayPt().get(0));
-        ArrayList<Integer> arrL = getMoveMent(path, robot.getDirection());
+        ArrayList<Integer> arrL = getMovement(path, robot.getDirection());
         System.out.println("arrL size: " + arrL.size());
         do {
             try {
@@ -96,10 +98,7 @@ public class Explore implements RobotData, MapData {
                 e.printStackTrace();
             }
 
-//this.Map.displayRobot(this.Robot.getDirection(), this.Robot.getX(), this.Robot.getY());
-//System.out.println("Y: " + path.getY() + "X: " + path.getX());
-//path = path.backtrack();
-//System.out.println("Action : " + arrL.get(0));
+
             if (arrL.get(0) == MOVEFORWARD) {
                 this.robot.moveForward();
                 this.robot.senseAll(this.map);
@@ -122,7 +121,7 @@ public class Explore implements RobotData, MapData {
                         }
                     }
                 }
-                arrL = getMoveMent(path, robot.getDirection());
+                arrL = getMovement(path, robot.getDirection());
 
             } else if (arrL.get(0) == TURNLEFT) {
                 this.robot.turnLeft();
@@ -266,19 +265,10 @@ public class Explore implements RobotData, MapData {
 
         System.out.println("A* Algorithm take: " + (end - start) + " Mil");
 
-//        if (path == null) {
-//            System.out.println("No path");
-//        } else {
-//            System.out.print("Path = ");
-//            for (PathFinder.Node n : path) {
-//                System.out.print(n);
-//            }
-//            System.out.println();
-//        }
         return path;
     }
 
-    public ArrayList<Integer> getMoveMent(List<PathFinder.Node> path, int direction) throws Exception {
+    public ArrayList<Integer> getMovement(List<PathFinder.Node> path, int direction) throws Exception {
         //first assume the first action is move forward to get to the second coordinator
         ArrayList<Integer> action = new ArrayList<Integer>();
 
@@ -360,15 +350,6 @@ public class Explore implements RobotData, MapData {
                 return TURNRIGHT;
             }
         }
-        /*if(Math.abs(next.getX()-previous.getX()) == 2 || Math.abs(next.getY()-previous.getY()) == 2)
-         return 1;
-         if((current.getX() - previous.getX() == next.getY() - current.getY() && current.getX() - previous.getX() != 0)
-         || (current.getY() - previous.getY() == current.getX() - next.getX() && current.getY() - previous.getY() != 0))
-         return 2;
-         if((current.getX() - previous.getX() == current.getY() - next.getY() && current.getX() - previous.getX() != 0)
-         || (current.getY() - previous.getY() == next.getX() - current.getX() && current.getY() - previous.getY() != 0))
-         return 3;
-         */
 
         return action;
     }

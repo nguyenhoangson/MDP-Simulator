@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import Robot.MDPRobot;
 import java.awt.GridLayout;
-import java.io.IOException;
+//import java.io.IOException;
 
 
 import Map.CoveredMap;
@@ -27,15 +27,16 @@ final public class RaceMain {
     final static int SENSORL = 20;
     final static int SENSORR = 20;
 
-    public static void main(String... args) throws IOException, Exception {
+    public static void main(String... args) throws Exception {
         
-        // SET UP SOCKET CONNECTION "WifiP@55"
-        System.out.println("setting up connection...");
-	    Client.setUp(Client.ip, Client.port);
-        System.out.println("connection created!");
-        String[] robotInfo = read().split(",");
-       
-        
+//         SET UP SOCKET CONNECTION "WifiP@55"
+//        System.out.println("setting up connection...");
+//	    Client.setUp(Client.ip, Client.port);
+//        System.out.println("connection created!");
+//        String[] robotInfo = read().split(",");
+        String[] robotInfo = "2,19,4".split(",");
+
+        // Map creation
         RealMap real = new RealMap();
         JFrame f = new JFrame("Group 19 Race");
         f.setSize(new Dimension(578, 790));
@@ -50,10 +51,11 @@ final public class RaceMain {
             System.out.println("Robot X: " + rx + " Y: " + ry + " D: " + rd);
             bot = new MDPRobot(rx,ry,rd, SENSORF, SENSORL, SENSORR);
         }
+
         System.out.println(RealMap.robPosX);
         System.out.println(RealMap.robPosY);
         map = new CoveredMap(real, bot);
-        System.out.println("bot created!");
+        System.out.println("Bot created!");
         System.out.println("Map created!");
         
         Container contentPane = f.getContentPane();
