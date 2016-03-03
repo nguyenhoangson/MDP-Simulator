@@ -683,7 +683,7 @@ public class Race {
                     }
                     robot.moveForward(-8);
                     if(mSteps == 0 || isMerged){   c = 'O';  i+=7; mSteps = 8; }
-                  
+
                  }
                  if(!isMerged && i < aList.size()-6 && isAllForward(aList,i,i+6)){
                                           robot.moveForward(7);
@@ -742,8 +742,13 @@ public class Race {
                  if(!isMerged && mSteps == 0) {c = 'W';    mSteps = 1;}           break;
                 case  TURNLEFT:    c = 'A'; turnWhere =1; break;
                 case  TURNRIGHT:   c = 'D'; turnWhere =2; break;
-            }   
-            str += (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c);
+            }
+            if (mSteps>0) {
+                String tempStr = "W" + mSteps;
+                str += tempStr;
+            }
+            else
+                str += (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c);
             robot.moveForward(mSteps);
             if(turnWhere ==1) robot.turnLeft(); 
             if(turnWhere ==2) robot.turnRight();
@@ -764,8 +769,8 @@ public class Race {
 
     void moveForward(int nSteps) {
         loopCounter++;
-        
-        char c = 'W';
+        String toSend = "W" + nSteps;
+        /* char c = 'W';
         if(nSteps == 1 ) c = 'W';
         if(nSteps == 2 ) c = 'N';
         if(nSteps == 3 ) c = 'M';
@@ -782,8 +787,8 @@ public class Race {
         if(nSteps == 14 ) c = 'B';
         if(nSteps == 15 ) c = 'F';
         if(nSteps == 16 ) c = 'U';
-        c = (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c);
-        write(""+c);
+        c = (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c); */
+        write(toSend);
         for(int i =0; i < nSteps; i++){
              robot.moveForward();
              if(isFastPath)this.map.setColor(robot.getX(), robot.getY(), PATH);
@@ -823,4 +828,7 @@ public class Race {
         
         if(type == -1) System.out.println("doAlignment Error----------------Error!");
     }
+
 }
+
+

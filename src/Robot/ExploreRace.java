@@ -79,7 +79,7 @@ public class ExploreRace implements RobotData, MapData {
 
     private boolean isNeededToGetBack() {
         //percentToCover = 50
-        return 50 <= robot.getPercentCellCovered() || timeLimit.getTimer() <= 30;
+        return percentToCover <= robot.getPercentCellCovered() || timeLimit.getTimer() <= 15;
     }
 
     //start exploration
