@@ -31,7 +31,4 @@ public class ActionSelection {
         
     }
 
-//    public static int go(CoveredMap Map, MDPRobot Robot) {
-//        return Robot.getMovement(Map);
-//    }
 }

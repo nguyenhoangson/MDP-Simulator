@@ -106,7 +106,6 @@ public class Race {
                     robot.mergeAStarAndExplored();
                     isFastPath = true;
                     isEnding = false;
-                    
                 }
                 isPreparingFastPath = true;
                 robot.enableCalibration();

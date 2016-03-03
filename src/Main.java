@@ -50,7 +50,6 @@ final public class Main {
         JFrame f = new JFrame();
         f.setTitle("Group 19 Simulator");
         f.setSize(new Dimension(700, 800));
-        // f.setResizable(false);
 
         Container contentPane = f.getContentPane();
         JPanel buttonPanel = new JPanel();
@@ -126,12 +125,14 @@ final public class Main {
 
                     System.out.println("bot created!");
                     map = new CoveredMap(real, bot);
+
+                    // exploration
                     Explore exp = new Explore(bot, map,
                             Double.parseDouble(stepsPerSec.getText()),
                             Double.parseDouble(percentToCover.getText()),
                             listener);
                     System.out.println("Explorer created!");
-                    exp.go();
+                     exp.go();
 
                 } catch (IOException ex) {
                     System.out.println("Save Map data Failed!");
