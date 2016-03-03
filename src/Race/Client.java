@@ -50,7 +50,12 @@ public class Client {
         try {
             sc = new Scanner(new InputStreamReader(socket.getInputStream()));
             inStr = sc.nextLine();
-            sc.close();
+
+            while(inStr != "\n"){
+                inStr = sc.nextLine();
+                System.out.println(inStr);
+            }
+
             return inStr;
 
         } catch (Exception e) {
@@ -66,7 +71,7 @@ public class Client {
         Client testClient = new Client();
         testClient.setUp(ip, port);
         testClient.write("Fie, do you copy?");
-        System.out.println("Trying to read from RPi");
+        System.out.println("Trying to read from RPi...");
         String readFromRPi = testClient.read();
         System.out.println(readFromRPi);
     }
