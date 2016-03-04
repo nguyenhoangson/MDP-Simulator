@@ -90,7 +90,7 @@ public class Race {
 
         String str;
         while(true) {
-            //array for storing distances in order: TL, TM, TR, FL, FR, LR 
+            //array for storing distances in order: FR, FL, FM, LS, RU, RL
             str = isForLocalTesting  ? robot.getSenseData(map) :read();
             System.out.println("Received:" + str);
             if(!isFastPath) ActionSelection.senseAll(map, robot, str);
@@ -208,9 +208,9 @@ public class Race {
                     }
                     if (actionList.size() == 0){
                         int action = robot.getMovement(map);
-                        if(robot.isLeftChanged && action==TURNRIGHT)
+                        if(robot.isRightChanged && action==TURNLEFT)
                             isBashing = true;
-                        robot.isLeftChanged = false;
+                        robot.isRightChanged = false;
                         actionList.add(action);
                     }
                     robot.updateCalibrationCounter();
@@ -548,7 +548,7 @@ public class Race {
                  robot.setDirection(NORTH);
                  
              robot.setX(x+1); robot.setY(y+1);
-             if(robot.isRightCalibarationAvailable(map)) growRate = 0.03f;
+             if(robot.isLeftCalibrationAvailable(map)) growRate = 0.03f;
              else growRate = 0.08f;
             
              
@@ -606,7 +606,7 @@ public class Race {
                     c = 'U';  i+=15; mSteps = 16; 
                     
                     robot.moveForward(mSteps);
-                    if(robot.isRightCalibarationAvailable(map))
+                    if(robot.isLeftCalibrationAvailable(map))
                         isMerged = true;
                     robot.moveForward(-mSteps);
                         
@@ -614,7 +614,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-14 && isAllForward(aList,i,i+14)){
                       robot.moveForward(15);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-15);
@@ -622,7 +622,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-13 && isAllForward(aList,i,i+13)){
                     robot.moveForward(14);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-14);
@@ -632,7 +632,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-12 && isAllForward(aList,i,i+12)){
                                          robot.moveForward(13);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-13);
@@ -641,7 +641,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-11 && isAllForward(aList,i,i+11)){
                                           robot.moveForward(12);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-12);
@@ -650,7 +650,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-10 && isAllForward(aList,i,i+10)){
                                           robot.moveForward(11);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-11);
@@ -659,7 +659,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-9 && isAllForward(aList,i,i+9)){
                                           robot.moveForward(10);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-10);
@@ -668,7 +668,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-8 && isAllForward(aList,i,i+8)){
                                           robot.moveForward(9);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-9);
@@ -677,7 +677,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-7 && isAllForward(aList,i,i+7)){
                                           robot.moveForward(8);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-8);
@@ -686,7 +686,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-6 && isAllForward(aList,i,i+6)){
                                           robot.moveForward(7);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-7);
@@ -695,7 +695,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-5 && isAllForward(aList,i,i+5)){
                                           robot.moveForward(6);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-6);
@@ -704,7 +704,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-4 && isAllForward(aList,i,i+4)){
                                           robot.moveForward(5);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-5);
@@ -713,7 +713,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-3 && isAllForward(aList,i,i+3)){
                                           robot.moveForward(4);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-4);
@@ -722,7 +722,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-2 && isAllForward(aList,i,i+2)){
                                           robot.moveForward(3);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-3);
@@ -731,7 +731,7 @@ public class Race {
                  }
                  if(!isMerged && i < aList.size()-1 && isAllForward(aList,i,i+1)){
                                           robot.moveForward(2);
-                    if(robot.isRightCalibarationAvailable(map)){
+                    if(robot.isLeftCalibrationAvailable(map)){
                         isMerged = true;
                     }
                     robot.moveForward(-2);
@@ -747,7 +747,7 @@ public class Race {
                 str += tempStr;
             }
             else
-                str += (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c);
+                str += (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
             robot.moveForward(mSteps);
             if(turnWhere ==1) robot.turnLeft(); 
             if(turnWhere ==2) robot.turnRight();
@@ -786,7 +786,7 @@ public class Race {
         if(nSteps == 14 ) c = 'B';
         if(nSteps == 15 ) c = 'F';
         if(nSteps == 16 ) c = 'U';
-        c = (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c); */
+        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c); */
         write(toSend);
         for(int i =0; i < nSteps; i++){
              robot.moveForward();
@@ -804,7 +804,7 @@ public class Race {
     void turnLeft() {
         loopCounter++;
         char c = 'A';
-        c = (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c);
+        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         robot.turnLeft();
         write(""+c);
     }
@@ -812,7 +812,7 @@ public class Race {
     void turnRight() {
         loopCounter++;
         char c = 'D';
-        c = (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c);
+        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         robot.turnRight();
         write(""+c);
     }
@@ -822,7 +822,7 @@ public class Race {
         if(type == ALIGHMENT_1) c = 'X';
         if(type == ALIGHMENT_2) c = 'Y';
         if(type == ALIGHMENT_3) c = 'Z';
-        c = (char) (robot.isRightCalibarationAvailable(map) ? c+32 : c);
+        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         write("" + c);
         
         if(type == -1) System.out.println("doAlignment Error----------------Error!");

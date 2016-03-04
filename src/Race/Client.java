@@ -48,7 +48,7 @@ public class Client {
     }
 
     public static String read() {
-        //array for storing distances in order: TL, TM, TR, FL, FR, LR 
+        //array for storing distances in order: FL, FM, FR, LS, RU, RL
         if(isForLocalTesting) return "1000,1000,1000,1000,1000,1000";
 
         String inStr = null;
@@ -94,7 +94,7 @@ public class Client {
             String readFromRPi = testClient.read();
             System.out.println(readFromRPi);
 
-        }catch (InterruptedException e){
+        } catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }
     }

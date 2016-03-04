@@ -13,21 +13,21 @@ import Robot.MDPRobot;
  * @author TQN
  */
 public class ActionSelection {
-    static public int dataReliablilty = 0;
-    static public int []distancesFromSensor = new int[8];
+    static public int dataReliablilty = 1;
+    static public int []distancesFromSensor = new int[6];
     public static void senseAll(CoveredMap map, MDPRobot robot, String str) {
         String[] sensorData = str.split(",");
          for (int i = 0; i < sensorData.length; i++) {
             int dist = Integer.parseInt(sensorData[i]);
             distancesFromSensor[i] = dist;
         }
-        dataReliablilty = distancesFromSensor[6];
-        robot.senseTL(map, distancesFromSensor[0]);
-        robot.senseTM(map, distancesFromSensor[1]);
-        robot.senseTR(map, distancesFromSensor[2]);
-        robot.senseFL(map, distancesFromSensor[3]);
-        robot.senseFR(map, distancesFromSensor[4]);
-        robot.senseLR(map, distancesFromSensor[5]);
+        //dataReliablilty = distancesFromSensor[6];
+        robot.senseFR(map, distancesFromSensor[0]);
+        robot.senseFL(map, distancesFromSensor[1]);
+        robot.senseFM(map, distancesFromSensor[2]);
+        robot.senseLS(map, distancesFromSensor[3]);
+        robot.senseRU(map, distancesFromSensor[4]);
+        robot.senseRL(map, distancesFromSensor[5]);
         
     }
 
