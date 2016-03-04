@@ -314,77 +314,56 @@ public class MDPRobot implements RobotData, MapData {
      }
 
      public void senseFL(CoveredMap map, int distance) {
-        if (distance > FLUB) return;
         if (checkObstacle(distance)) {
-           paintFLWall(map, 2);
+           paintFLWall(map, 1);
         } 
-        else{
+        else {
             paintFLFree(map, 2);
         }
     }
 
     public void senseFM(CoveredMap map, int distance) {
-        if(distance < FMLB) return;
-        if (distance > FMUB) {
-            paintFMFree(map, FMUB / 10 + 1);
-        } else if(checkObstacle(distance-2)) {
-            paintFMFree(map,  (distance+VARITATION-2)/10);
-            paintFMWall(map,  (distance+VARITATION-2)/10);
-        } else{
-           // paintFMUnderterminated(Map, distance / 10);
-            paintFMFree(map,  (distance+VARITATION-2)/10);
+        if (checkObstacle(distance)) {
+            paintFMWall(map, 1);
+        }
+        else {
+            paintFMFree(map, 2);
         }
     }
 
     public void senseFR(CoveredMap map, int distance) {
-        if(distance < FRLB) return;
-        if (distance > FRUB) {
-            paintFRFree(map, FRUB / 10 + 1);
-        } else if(checkObstacle(distance-2))  {
-            paintFRFree(map,  (distance-2+VARITATION)/10);
-            paintFRWall(map,  (distance-2+VARITATION)/10);
-        } else {
-            //paintFRUnderterminated(Map, distance / 10);
-            paintFRFree(map,  (distance-2+VARITATION)/10);
+        if (checkObstacle(distance)) {
+            paintFRWall(map, 1);
+        }
+        else {
+            paintFRFree(map, 2);
         }
     }
 
     public void senseLS(CoveredMap map, int distance) {
-        if(distance < LSLB) return;
-        //10
-        if (distance > LSUB) {
-            paintLSFree(map, LSUB / 10 + 1);
-        } else if (checkObstacle(distance)) {
-            paintLSFree(map,  (distance+VARITATION) / 10);
-            paintLSWall(map,  (distance+VARITATION)/ 10);
-        } else  {
-           // paintLSUnderterminated(Map, (distance + 5) / 10);
-            paintLSFree(map,  (distance+VARITATION) / 10);
+        if (checkObstacle(distance)) {
+            paintLSWall(map, 1);
+        }
+        else {
+            paintLSFree(map, 2);
         }
     }
 
     public void senseRU(CoveredMap map, int distance) {
-        if(distance < RULB) return;
-        if (distance > RUUB) {
-            paintRUFree(map, RUUB / 10 + 1);
-        } else  if (checkObstacle(distance+3))  {
-      
-            paintRUFree(map, (distance+VARITATION+3) / 10);
-            paintRUWall(map, (distance+VARITATION+3) / 10);
-        } else{
-            paintRUFree(map, (distance+VARITATION+3) / 10);
+        if (checkObstacle(distance)) {
+            paintRUWall(map, 1);
+        }
+        else {
+            paintRUFree(map, 2);
         }
     }
 
     public void senseRL(CoveredMap map, int distance) {
-        if(distance < RLLB) return;
-        if (distance > RLUB) {
-            paintRLFree(map, RLUB / 10 + 1);
-        } else if (checkObstacle(distance)){
-            paintRLFree(map,  (distance+VARITATION) / 10);
-            paintRLWall(map,  (distance+VARITATION) / 10);
-        } else {
-            paintRLFree(map,  (distance+VARITATION) / 10);
+        if (checkObstacle(distance)) {
+            paintRLWall(map, 1);
+        }
+        else {
+            paintRLFree(map, 2);
         }
     }
 
