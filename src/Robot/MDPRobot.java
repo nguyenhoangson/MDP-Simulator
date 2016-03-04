@@ -191,38 +191,36 @@ public class MDPRobot implements RobotData, MapData {
             }
             if (uncovered2.getColor() == WALL) {break;}
         }
-       str +=addVariation(i*10-10+2,v) +",";
+        str +=addVariation(i*10-10+2,v) +",";
 
-        for (i = 0; i <= this.sensorL + 2; i++) { //LS
+        for (i = 0; i <= this.sensorL + 2; i++) { // LS
             switch (this.direction) {
-                case EAST:uncovered1 = map.uncoverACell(this.x + 1, this.y - i);break;
-                case SOUTH:uncovered1 = map.uncoverACell(this.x + i, this.y + 1);break;
-                case WEST:uncovered1 = map.uncoverACell(this.x - 1, this.y + i); break;
-                case NORTH:uncovered1 = map.uncoverACell(this.x - i, this.y - 1);break;
+                case EAST:uncovered1 = map.uncoverACell(this.x, this.y - i, this);break;
+                case SOUTH:uncovered1 = map.uncoverACell(this.x + i, this.y, this);break;
+                case WEST:uncovered1 = map.uncoverACell(this.x, this.y + i, this); break;
+                case NORTH:uncovered1 = map.uncoverACell(this.x - i, this.y, this);break;
             }
-            if (uncovered1.getColor() == WALL) { break;}
+            if (uncovered1.getColor() == WALL) {break; }
         }
         str +=addVariation(i*10-10,v) + ",";
-        
-         for (i = 0; i <= this.sensorR + 2; i++) { //RU
+        for (i = 0; i <= this.sensorR + 2; i++) { // RU
             switch (this.direction) {
-                case EAST:uncovered1 = map.uncoverACell(this.x + 1, this.y + i);break;
-                case SOUTH:uncovered1 = map.uncoverACell(this.x - i, this.y + 1); break;
-                case WEST: uncovered1 = map.uncoverACell(this.x - 1, this.y - i); break;
-                case NORTH:uncovered1 = map.uncoverACell(this.x + i, this.y - 1);break;
+                case EAST:uncovered1 = map.uncoverACell(this.x + 1, this.y + i, this);break;
+                case SOUTH:uncovered1 = map.uncoverACell(this.x - i, this.y + 1, this);break;
+                case WEST: uncovered1 = map.uncoverACell(this.x - 1, this.y - i, this);break;
+                case NORTH:uncovered1 = map.uncoverACell(this.x + i, this.y - 1, this);break;
             }
-            if (uncovered1.getColor() == WALL) {break;}
+            if (uncovered1.getColor() == WALL) break;
         }
-         str += addVariation(i*10-10 + 8,v)+   ","; 
-
-        for (i = 0; i <= this.sensorL + 2; i++) { //RL
+        str += addVariation(i*10-10 + 8,v)+   ",";
+        for (i = 0; i<= this.sensorR + 2; i++) { // RL
             switch (this.direction) {
-                case EAST:uncovered1 = map.uncoverACell(this.x - 1, this.y - i); break;
-                case SOUTH:uncovered1 = map.uncoverACell(this.x + i, this.y - 1);break;
-                case WEST: uncovered1 = map.uncoverACell(this.x + 1, this.y + i); break;
-                case NORTH:uncovered1 = map.uncoverACell(this.x - i, this.y + 1);break;
+                case EAST:uncovered2 = map.uncoverACell(this.x - 1, this.y + i, this);break;
+                case SOUTH:uncovered2 = map.uncoverACell(this.x - i, this.y - 1, this);break;
+                case WEST: uncovered2 = map.uncoverACell(this.x + 1, this.y - i, this);break;
+                case NORTH:uncovered2 = map.uncoverACell(this.x + i, this.y + 1, this);break;
             }
-            if (uncovered1.getColor() == WALL) { break;}
+            if (uncovered2.getColor() == WALL) break;
         }
         str +=addVariation(i*10-10,v) + ",";
         
@@ -277,29 +275,18 @@ public class MDPRobot implements RobotData, MapData {
         int i;
         for (i = 0; i <= this.sensorL + 2; i++) {
             switch (this.direction) {
-                case EAST:uncovered1 = map.uncoverACell(this.x + 1, this.y - i, this);break;
-                case SOUTH:uncovered1 = map.uncoverACell(this.x + i, this.y + 1, this);break;
-                case WEST:uncovered1 = map.uncoverACell(this.x - 1, this.y + i, this); break;
-                case NORTH:uncovered1 = map.uncoverACell(this.x - i, this.y - 1, this);break;
+                case EAST:uncovered1 = map.uncoverACell(this.x, this.y - i, this);break;
+                case SOUTH:uncovered1 = map.uncoverACell(this.x + i, this.y, this);break;
+                case WEST:uncovered1 = map.uncoverACell(this.x, this.y + i, this); break;
+                case NORTH:uncovered1 = map.uncoverACell(this.x - i, this.y, this);break;
             }
             if (uncovered1.getColor() == WALL) {break; }
         }
-        
-        for (i = 0; i <= this.sensorL + 2; i++) {
-            switch (this.direction) {
-                case EAST:uncovered1 = map.uncoverACell(this.x - 1, this.y - i, this);break;
-                case SOUTH:uncovered1 = map.uncoverACell(this.x + i, this.y - 1, this);break;
-                case WEST:uncovered1 = map.uncoverACell(this.x + 1, this.y + i, this);break;
-                case NORTH:uncovered1 = map.uncoverACell(this.x - i, this.y + 1, this);break;
-            }
-            if (uncovered1.getColor() == WALL) {break;}
-        }
-
     }
 
     void senseRight(CoveredMap map) {
         Cell uncovered1 = null;
-
+        Cell uncovered2 = null;
         int i;
         for (i = 0; i <= this.sensorR + 2; i++) {
             switch (this.direction) {
@@ -309,6 +296,16 @@ public class MDPRobot implements RobotData, MapData {
                 case NORTH:uncovered1 = map.uncoverACell(this.x + i, this.y - 1, this);break;
             }
             if (uncovered1.getColor() == WALL) break;
+        }
+
+        for (i = 0; i<= this.sensorR + 2; i++) {
+            switch (this.direction) {
+                case EAST:uncovered2 = map.uncoverACell(this.x - 1, this.y + i, this);break;
+                case SOUTH:uncovered2 = map.uncoverACell(this.x - i, this.y - 1, this);break;
+                case WEST: uncovered2 = map.uncoverACell(this.x + 1, this.y - i, this);break;
+                case NORTH:uncovered2 = map.uncoverACell(this.x + i, this.y + 1, this);break;
+            }
+            if (uncovered2.getColor() == WALL) break;
         }
 
     }
