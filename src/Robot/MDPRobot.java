@@ -309,20 +309,17 @@ public class MDPRobot implements RobotData, MapData {
         }
 
     }
-      boolean checkVaritation(int d){
-         d %=10;
-         return d <= VARITATION || d >= 10-VARITATION;
+      boolean checkObstacle(int d){
+         return d <= 11;
      }
+
      public void senseFL(CoveredMap map, int distance) {
-        if(distance < FLLB) return;
-        if (distance > FLUB) { paintFLFree(map, FLUB/10 + 1);
-        } else if(checkVaritation(distance-2)){
-           paintFLFree(map, (distance-2+VARITATION)/10);
-           paintFLWall(map, (distance-2+VARITATION)/10);
+        if (distance > FLUB) return;
+        if (checkObstacle(distance)) {
+           paintFLWall(map, 2);
         } 
         else{
-            //paintFLUnderterminated(Map, distance / 10);
-            paintFLFree(map, (distance-2+VARITATION)/10);
+            paintFLFree(map, 2);
         }
     }
 
@@ -330,7 +327,7 @@ public class MDPRobot implements RobotData, MapData {
         if(distance < FMLB) return;
         if (distance > FMUB) {
             paintFMFree(map, FMUB / 10 + 1);
-        } else if(checkVaritation(distance-2)) {
+        } else if(checkObstacle(distance-2)) {
             paintFMFree(map,  (distance+VARITATION-2)/10);
             paintFMWall(map,  (distance+VARITATION-2)/10);
         } else{
@@ -343,7 +340,7 @@ public class MDPRobot implements RobotData, MapData {
         if(distance < FRLB) return;
         if (distance > FRUB) {
             paintFRFree(map, FRUB / 10 + 1);
-        } else if(checkVaritation(distance-2))  {
+        } else if(checkObstacle(distance-2))  {
             paintFRFree(map,  (distance-2+VARITATION)/10);
             paintFRWall(map,  (distance-2+VARITATION)/10);
         } else {
@@ -357,7 +354,7 @@ public class MDPRobot implements RobotData, MapData {
         //10
         if (distance > LSUB) {
             paintLSFree(map, LSUB / 10 + 1);
-        } else if (checkVaritation(distance)) {
+        } else if (checkObstacle(distance)) {
             paintLSFree(map,  (distance+VARITATION) / 10);
             paintLSWall(map,  (distance+VARITATION)/ 10);
         } else  {
@@ -370,7 +367,7 @@ public class MDPRobot implements RobotData, MapData {
         if(distance < RULB) return;
         if (distance > RUUB) {
             paintRUFree(map, RUUB / 10 + 1);
-        } else  if (checkVaritation(distance+3))  {
+        } else  if (checkObstacle(distance+3))  {
       
             paintRUFree(map, (distance+VARITATION+3) / 10);
             paintRUWall(map, (distance+VARITATION+3) / 10);
@@ -383,7 +380,7 @@ public class MDPRobot implements RobotData, MapData {
         if(distance < RLLB) return;
         if (distance > RLUB) {
             paintRLFree(map, RLUB / 10 + 1);
-        } else if (checkVaritation(distance)){
+        } else if (checkObstacle(distance)){
             paintRLFree(map,  (distance+VARITATION) / 10);
             paintRLWall(map,  (distance+VARITATION) / 10);
         } else {
@@ -429,19 +426,19 @@ public class MDPRobot implements RobotData, MapData {
 
     void paintRUWall(CoveredMap map, int distance) {
         switch (this.direction) {
-            case EAST:map.setExploredMap(this, this.x + 1, this.y + distance, WALL, distance);break;
-            case SOUTH:map.setExploredMap(this, this.x - distance, this.y + 1, WALL, distance); break;
-            case WEST: map.setExploredMap(this, this.x - 1, this.y - distance, WALL, distance);break;
-            case NORTH:map.setExploredMap(this, this.x + distance, this.y - 1, WALL, distance); break;
+            case EAST:map.setExploredMap(this, this.x + 1, this.y + distance + 1, WALL, distance);break;
+            case SOUTH:map.setExploredMap(this, this.x - distance - 1, this.y + 1, WALL, distance); break;
+            case WEST: map.setExploredMap(this, this.x - 1, this.y - distance - 1, WALL, distance);break;
+            case NORTH:map.setExploredMap(this, this.x + distance + 1, this.y - 1, WALL, distance); break;
         }
     }
 
     void paintRLWall(CoveredMap map, int distance) {
         switch (this.direction) {
-            case EAST:map.setExploredMap(this, this.x - 1, this.y - distance - 1, WALL, distance);break;
-            case SOUTH:map.setExploredMap(this, this.x + distance + 1, this.y - 1, WALL, distance);break;
-            case WEST:map.setExploredMap(this, this.x + 1, this.y + distance + 1, WALL, distance);break;
-            case NORTH:map.setExploredMap(this, this.x - distance - 1, this.y + 1, WALL, distance);break;
+            case EAST:map.setExploredMap(this, this.x - 1, this.y + distance + 1, WALL, distance);break;
+            case SOUTH:map.setExploredMap(this, this.x - distance - 1, this.y - 1, WALL, distance);break;
+            case WEST:map.setExploredMap(this, this.x + 1, this.y - distance - 1, WALL, distance);break;
+            case NORTH:map.setExploredMap(this, this.x + distance + 1, this.y + 1, WALL, distance);break;
         }
     }
 
@@ -582,19 +579,19 @@ public class MDPRobot implements RobotData, MapData {
             switch (this.direction) {
                 case EAST:
                     if (x - 1 > 0 && y - i - 1 > 0)
-                        map.setExploredMap(this, this.x - 1, this.y - i - 1, FREE, i);
+                        map.setExploredMap(this, this.x - 1, this.y + i + 1, FREE, i);
                     break;
                 case SOUTH:
                     if (x + i + 1 < COLS - 1 && y - 1 > 0)
-                        map.setExploredMap(this, this.x + i + 1, this.y - 1, FREE, i);
+                        map.setExploredMap(this, this.x - i - 1, this.y - 1, FREE, i);
                     break;
                 case WEST:
                     if (x + 1 < COLS - 1 && y + i + 1 < ROWS - 1)
-                        map.setExploredMap(this, this.x + 1, this.y + i + 1, FREE, i);
+                        map.setExploredMap(this, this.x + 1, this.y - i - 1, FREE, i);
                     break;
                 case NORTH:
                     if (y + 1 < ROWS - 1 && x - i - 1 > 0)
-                        map.setExploredMap(this, this.x - i - 1, this.y + 1, FREE, i);
+                        map.setExploredMap(this, this.x + i + 1, this.y + 1, FREE, i);
                     break;
             }
         }
