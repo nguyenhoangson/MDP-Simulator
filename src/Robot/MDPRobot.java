@@ -310,7 +310,7 @@ public class MDPRobot implements RobotData, MapData {
 
     }
       boolean checkObstacle(int d){
-         return d <= 11;
+         return (0<=d) && (d<=11);
      }
 
      public void senseFL(CoveredMap map, int distance) {

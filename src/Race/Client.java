@@ -56,21 +56,15 @@ public class Client {
         try {
             sc = new Scanner(new InputStreamReader(socket.getInputStream()));
             inStr = sc.nextLine();
-
-            while(inStr != "\n"){
-                inStr = sc.nextLine();
-                System.out.println(inStr);
-            }
-
+            System.out.println(inStr);
             return inStr;
-
         } catch (Exception e) {
             System.out.println("Read error: " + e.getMessage());
             System.out.println("re-connecting...");
             Client.setUp(ip, port);
             System.out.println("re-connected!");
+            return read();
         }
-        return inStr;
     }
 
     public static void main (String... args) throws InterruptedException {
@@ -87,7 +81,7 @@ public class Client {
 
             // Only send the message when connection is ready
             for(int i = 0; i < 10; i++){
-                testClient.write("W\n");
+                testClient.write("WUTTT\n");
             }
 
             System.out.println("Trying to read from RPi...");

@@ -1,5 +1,6 @@
 package Race;
 
+import static Race.Client.*;
 import static Race.Client.isForLocalTesting;
 import static Race.Client.read;
 import java.awt.BorderLayout;
@@ -29,11 +30,16 @@ final public class RaceMain {
 
     public static void main(String... args) throws Exception {
         
-//         SET UP SOCKET CONNECTION "WifiP@55"
-//        System.out.println("setting up connection...");
-//	    Client.setUp(Client.ip, Client.port);
-//        System.out.println("connection created!");
-//        String[] robotInfo = read().split(",");
+        // Set up connection
+
+        System.out.println("setting up connection...");
+        boolean connected;
+
+	    do {
+            connected = setUp(ip, port);
+        } while (!connected);
+        System.out.println("connection created!");
+        //String[] robotInfo = read().split(",");
         String[] robotInfo = "2,19,4".split(",");
 
         // Map creation
@@ -68,8 +74,27 @@ final public class RaceMain {
         // Display the window.
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
+        // every 4 steps/ corner/ 3 blocks at front
+        // left side can scan to 7 - 8 grids
+        // cutoff: 24, 95
+        //String[] control = {"w2adw1aaaa", "dw2", "w1a"};
+        try {
+            Thread.currentThread().sleep(500);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
         Race race = new Race(bot, map);
         race.mainLoop();
+        /*
+        write("e\n");
+        Client.read();
+        for (int i = 0; i < 1; i++) {
+            write("e\n");
+            String readData = read();
+            System.out.println("Sensor info: " + readData);
+            //Client.write(control[0]);
+        } */
     }
 }

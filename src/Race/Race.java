@@ -78,8 +78,9 @@ public class Race {
                 }
         }
          
-        Client.write("i");
-        actionList.add(TURNLEFT);
+        Client.write("e");
+        Client.read();
+        actionList.add(TURNRIGHT);
        
     }
 
@@ -91,6 +92,7 @@ public class Race {
         String str;
         while(true) {
             //array for storing distances in order: FR, FL, FM, LS, RU, RL
+            write("e");
             str = isForLocalTesting  ? robot.getSenseData(map) :read();
             System.out.println("Received:" + str);
             if(!isFastPath) ActionSelection.senseAll(map, robot, str);
@@ -151,7 +153,7 @@ public class Race {
                      }
                     robot.setDirection(dir);
                     
-                    if(directionToBashFound){
+                    /* if(directionToBashFound){
                         if(directionToBash<0){
                             int degree = ((int) -(directionToBash/2));
                             char d = (char) (degree+33);
@@ -167,7 +169,7 @@ public class Race {
                         if (c > 95) c -= 32;
                         String s = pS.substring(0, pS.length() - 1);
                         write("Q" + s + "1" + c);
-                    }
+                    } */
                     
                     read();
                 
@@ -180,10 +182,10 @@ public class Race {
             }
 
             if (actionList.size() == 0) {
-                if(directionToBashFound){
+                /*if(directionToBashFound){
                    System.out.println("Dash to goal UI no ready!" );
                     break;
-                }
+                }*/
                 doCalibration();
                 if(actionList.isEmpty()) {
                     if(neededTobreakLoop){
@@ -816,16 +818,18 @@ public class Race {
         robot.turnRight();
         write(""+c);
     }
+
     void doAlignment(int type) {
-         loopCounter++;
-        char c = 'X';
+        /*return;
+        loopCounter++;
+        char c = 'C';
         if(type == ALIGHMENT_1) c = 'X';
         if(type == ALIGHMENT_2) c = 'Y';
         if(type == ALIGHMENT_3) c = 'Z';
         c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         write("" + c);
         
-        if(type == -1) System.out.println("doAlignment Error----------------Error!");
+        if(type == -1) System.out.println("doAlignment Error----------------Error!"); */
     }
 
 }
