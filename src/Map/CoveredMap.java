@@ -6,9 +6,11 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import Race.Race;
 import Robot.MDPRobot;
 import Robot.RobotData;
 import java.util.ArrayList;
+import Race.*;
 
 public class CoveredMap extends JPanel implements MapData, RobotData {
 
@@ -63,6 +65,8 @@ public class CoveredMap extends JPanel implements MapData, RobotData {
 
             if (newCell[j][i].getColor() != PATH && newCell[j][i].getColor() != ROBOTB && newCell[j][i].getColor() != START_GOAL_ZONE && newCell[j][i].getColor() != START){
                 newCell[j][i].setColor(color);
+                if (color == WALL && !Client.isForLocalTesting)
+                    Race.sendObstacle(i, j);
             }
             if(newCell[j][i].getColor() == ROBOTB || newCell[j][i].getColor() == PATH)  
                 myAStarMap2[j][i] = true; // for walkable

@@ -64,7 +64,8 @@ public class Race {
     boolean neededTobreakLoop = false;
     boolean isfirstRepeatPath = false;
     int infinLoopCounter = 0;
-    
+    public static final boolean noBT = true;
+
     int directionToBash = -1;
     boolean directionToBashFound = false;
    
@@ -78,7 +79,7 @@ public class Race {
                 }
         }
          
-        Client.write("e");
+        Client.writeToArduino("E");
         Client.read();
         actionList.add(TURNRIGHT);
        
@@ -92,8 +93,8 @@ public class Race {
         String str;
         while(true) {
             //array for storing distances in order: FR, FL, FM, LS, RU, RL
-            write("e");
-            str = isForLocalTesting  ? robot.getSenseData(map) :read();
+            writeToArduino("E");
+            str = isForLocalTesting  ? robot.getSenseData(map) : read();
             System.out.println("Received:" + str);
             if(!isFastPath) ActionSelection.senseAll(map, robot, str);
             map.repaint();
@@ -829,6 +830,13 @@ public class Race {
         c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         writeToArduino("" + c);
         if(type == -1) System.out.println("doAlignment Error----------------Error!");
+    }
+
+    public static void sendObstacle(int x, int y) {
+        if (noBT) return;
+        x -= 1; y -= 1;
+        String toSend = "ADDOBSTACLE:" + x + "," + y;
+        Client.writeToAndroid(toSend);
     }
 
 }
