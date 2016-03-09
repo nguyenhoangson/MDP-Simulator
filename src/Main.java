@@ -132,7 +132,7 @@ final public class Main {
                             Double.parseDouble(percentToCover.getText()),
                             listener);
                     System.out.println("Explorer created!");
-                     exp.go();
+                    exp.go();
 
                 } catch (IOException ex) {
                     System.out.println("Save Map data Failed!");

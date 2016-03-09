@@ -2,7 +2,6 @@ package Race;
 
 import static Race.Client.*;
 import static Race.Client.isForLocalTesting;
-import static Race.Client.read;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -79,22 +78,16 @@ final public class RaceMain {
         // left side can scan to 7 - 8 grids
         // cutoff: 24, 95
         //String[] control = {"w2adw1aaaa", "dw2", "w1a"};
+
         try {
             Thread.currentThread().sleep(500);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
 
-        /*Race race = new Race(bot, map);
-        race.mainLoop();*/
+        Race race = new Race(bot, map);
+        race.mainLoop();
 
-        write("e\n");
-        Client.read();
-        for (int i = 0; i < 1; i++) {
-            write("e\n");
-            String readData = read();
-            System.out.println("Sensor info: " + readData);
-            //Client.write(control[0]);
-        }
+
     }
 }

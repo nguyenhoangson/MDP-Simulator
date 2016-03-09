@@ -86,7 +86,6 @@ public class Explore implements RobotData, MapData {
         this.robot.senseAll(this.map);
         this.map.repaint();
 
-   
         List<PathFinder.Node> path = getAStarPath(robot.getPresetWayPt().get(0));
         ArrayList<Integer> arrL = getMovement(path, robot.getDirection());
         System.out.println("arrL size: " + arrL.size());
@@ -130,8 +129,10 @@ public class Explore implements RobotData, MapData {
                 this.robot.turnRight();
                 arrL.remove(0);
             }
+
             this.robot.senseAll(this.map);
             this.map.repaint();
+
         } while (!isExporationEnd);
     }
 

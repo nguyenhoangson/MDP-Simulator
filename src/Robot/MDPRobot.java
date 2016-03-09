@@ -64,6 +64,7 @@ public class MDPRobot implements RobotData, MapData {
             }
         }
     }
+
     public MDPRobot(int startX, int startY, int direction_,
             int sensorF, int sensorL, int sensorR) {
 
@@ -71,9 +72,10 @@ public class MDPRobot implements RobotData, MapData {
         this.sensorL = sensorL;
         this.sensorR = sensorR;
 
-        x = startX;
-        y = startY;
-        direction = direction_;
+        this.x = startX;
+        this.y = startY;
+        this.direction = direction_;
+
         for (int i = 0; i < ROWS - 2; i++) {
             for (int j = 0; j < COLS - 2; j++) {
                 myExposedMap[i][j] = 0;
@@ -107,43 +109,79 @@ public class MDPRobot implements RobotData, MapData {
 
     }
 
-        // to perform some basic movements
+    // to perform some basic movements
     public void moveForward(int steps) {
         switch (this.direction) {
-            case EAST:this.x+=steps;break;
-            case SOUTH:this.y+=steps;break;
-            case WEST:this.x-=steps; break;
-            case NORTH:this.y-=steps;break;
+            case EAST:
+                this.x+=steps;
+                break;
+            case SOUTH:
+                this.y+=steps;
+                break;
+            case WEST:
+                this.x-=steps;
+                break;
+            case NORTH:
+                this.y-=steps;
+                break;
         }
     }
+
     // to perform some basic movements
     public void moveForward() {
         switch (this.direction) {
-            case EAST:this.x++;break;
-            case SOUTH:this.y++;break;
-            case WEST:this.x--; break;
-            case NORTH:this.y--;break;
+            case EAST:
+                this.x++;
+                break;
+            case SOUTH:
+                this.y++;
+                break;
+            case WEST:
+                this.x--;
+                break;
+            case NORTH:
+                this.y--;
+                break;
         }
     }
 
+    // to perform some basic movements
     public void turnLeft() {
         switch (this.direction) {
-            case EAST:this.direction = NORTH;break;
-            case SOUTH:this.direction = EAST;break;
-            case WEST:this.direction = SOUTH;break;
-            case NORTH:this.direction = WEST;break;
+            case EAST:
+                this.direction = NORTH;
+                break;
+            case SOUTH:
+                this.direction = EAST;
+                break;
+            case WEST:
+                this.direction = SOUTH;
+                break;
+            case NORTH:
+                this.direction = WEST;
+                break;
         }
     }
 
+    // to perform some basic movements
     public void turnRight() {
         switch (this.direction) {
-            case EAST:this.direction = SOUTH;break;
-            case SOUTH:this.direction = WEST;break;
-            case WEST:this.direction = NORTH;break;
-            case NORTH:this.direction = EAST;break;
+            case EAST:
+                this.direction = SOUTH;
+                break;
+            case SOUTH:
+                this.direction = WEST;
+                break;
+            case WEST:
+                this.direction = NORTH;
+                break;
+            case NORTH:
+                this.direction = EAST;
+                break;
         }
     }
 
+    // to perform some basic movements
     public void turnBack() {
         this.turnLeft();
         this.turnLeft();
@@ -180,6 +218,7 @@ public class MDPRobot implements RobotData, MapData {
             }
             if (uncovered1.getColor() == WALL) { break;}
         }
+
         str +=addVariation(i*10-10+2,v) +",";
     
         for (i = 0; i <= this.sensorF + 2; i++) { // FR
@@ -191,6 +230,7 @@ public class MDPRobot implements RobotData, MapData {
             }
             if (uncovered2.getColor() == WALL) {break;}
         }
+
         str +=addVariation(i*10-10+2,v) +",";
 
         for (i = 0; i <= this.sensorL + 2; i++) { // LS
@@ -202,7 +242,9 @@ public class MDPRobot implements RobotData, MapData {
             }
             if (uncovered1.getColor() == WALL) {break; }
         }
+
         str +=addVariation(i*10-10,v) + ",";
+
         for (i = 0; i <= this.sensorR + 2; i++) { // RU
             switch (this.direction) {
                 case EAST:uncovered1 = map.uncoverACell(this.x + 1, this.y + i, this);break;
@@ -236,6 +278,7 @@ public class MDPRobot implements RobotData, MapData {
         Cell uncovered2 = null;
         Cell uncovered3 = null;
         int i;
+
         for (i = 0; i <= this.sensorF + 2; i++) {
             switch (this.direction) {
                 case EAST:uncovered1 = map.uncoverACell(this.x + i, this.y, this);break;
@@ -309,11 +352,13 @@ public class MDPRobot implements RobotData, MapData {
         }
 
     }
-      boolean checkObstacle(int d){
+
+
+    boolean checkObstacle(int d){
          return (0<=d) && (d<=11);
      }
 
-     public void senseFL(CoveredMap map, int distance) {
+    public void senseFL(CoveredMap map, int distance) {
         if (checkObstacle(distance)) {
            paintFLWall(map, 1);
         } 
@@ -579,6 +624,8 @@ public class MDPRobot implements RobotData, MapData {
     public void setPreviousAction(int action){
         previousAction = action;
     }
+
+    // Get the next move??
     public int getMovement(CoveredMap map) {
         switch (direction) {
             case NORTH:
@@ -681,7 +728,7 @@ public class MDPRobot implements RobotData, MapData {
         return -1;
     }
     
-        public boolean isLeftCalibrationAvailable(CoveredMap map) {
+    public boolean isLeftCalibrationAvailable(CoveredMap map) {
 
         Cell [][]cells = map.getNewCell();
         switch (this.direction) {
@@ -704,10 +751,12 @@ public class MDPRobot implements RobotData, MapData {
     public void enableCalibration(){
         x_axis_calibration_counter = y_axis_calibration_counter = 999;
     }
+
     public void updateCalibrationCounter(){
         x_axis_calibration_counter++;
         y_axis_calibration_counter++;
     }
+
     public int checkCalibration(CoveredMap map) {
         if (x_axis_calibration_counter >= 3
                 && ((map.getNewCell()[y - 2][x + 2].getColor() == WALL && map.getNewCell()[y + 2][x + 2].getColor() == WALL &&
@@ -826,6 +875,7 @@ public class MDPRobot implements RobotData, MapData {
     public int getYC() {
         return (this.y) * 33 + 15 + 33;
     }
+
     public void setPreviousLeftWall(boolean b) {
         this.previousLeftWall = b;
     }
@@ -852,6 +902,7 @@ public class MDPRobot implements RobotData, MapData {
     public boolean[][] getMyAStarMap() {
         return myAStarMap;
     }
+
     public boolean[][] getMyAStarMap2() {
         return myAStarMap2;
     }

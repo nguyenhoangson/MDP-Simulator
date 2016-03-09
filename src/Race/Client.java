@@ -61,7 +61,7 @@ public class Client {
         //array for storing distances in order: FL, FM, FR, LS, RU, RL
         if(isForLocalTesting) return "1000,1000,1000,1000,1000,1000";
 
-        String inStr = null;
+        String inStr;
         Scanner sc;
         try {
             sc = new Scanner(new InputStreamReader(socket.getInputStream()));

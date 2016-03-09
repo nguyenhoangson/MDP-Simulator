@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Race;
 
 import AStar.Algorithm;
 import AStar.Algorithm3B3;
 import AStar.PathFinder;
-
-import java.io.IOException;
 
 import static Race.Client.*;
 import static java.lang.Math.PI;
@@ -49,6 +48,7 @@ public class Race {
 
     private MDPRobot robot = null;
     private CoveredMap map = null;
+
     protected ArrayList<Integer> actionList = new ArrayList<>();
     protected ArrayList<Integer> XCoordinatorList = new ArrayList<>();
     protected ArrayList<Integer> YCoordinatorList = new ArrayList<>();
@@ -59,11 +59,14 @@ public class Race {
     private boolean isEnding= false;
     private boolean isBashing = true;
     private boolean isTracking = false;
+
     private int oldRx =-1, oldRy =-1;
+
     private int loopCounter = 0;
     boolean neededTobreakLoop = false;
     boolean isfirstRepeatPath = false;
     int infinLoopCounter = 0;
+
     public static final boolean noBT = true;
 
     int directionToBash = -1;
@@ -78,30 +81,44 @@ public class Race {
                     coveredMap.setExploredMap(robot,j,i,FREE,0);
                 }
         }
-         
-        Client.writeToArduino("E");
-        Client.read();
+
+        // Initialize
+        writeToArduino("E");
+        System.out.println("Reading from RPI...");
+        read();
         actionList.add(TURNRIGHT);
        
     }
 
-        private static String deleteCharAt(String strValue, int index) {
-		return strValue.substring(0, index) + strValue.substring(index + 1);
-	}   
-    public void mainLoop() throws IOException, Exception {
+    public void mainLoop() throws Exception {
 
-        String str;
+        String stringDecision; // String used to decide what will be the next action to take
+
         while(true) {
-            //array for storing distances in order: FR, FL, FM, LS, RU, RL
+            // Array for storing distances in order: FR, FL, FM, LS, RU, RL
+
             writeToArduino("E");
-            str = isForLocalTesting  ? robot.getSenseData(map) : read();
-            System.out.println("Received:" + str);
-            if(!isFastPath) ActionSelection.senseAll(map, robot, str);
+
+            // Get sensor info
+            stringDecision = isForLocalTesting  ? robot.getSenseData(map) : read();
+
+            System.out.println("Received:" + stringDecision);
+
+            // Get the sensor information to choose what will be the next action
+            if(!isFastPath)
+                ActionSelection.senseAll(map, robot, stringDecision);
+
+            // Update map in PC
             map.repaint();
+
+            // Pause for a while
             if(isForLocalTesting)try {Thread.sleep((long) (isFastPath ? 200 : 50));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+
+            // When the robot is at the start position or end position and it has not ended yet
             if (!isEnding && (isFastPath && robot.getX() == 14 && robot.getY() == 2) || (!isFastPath && isNeededToGetBack() && robot.getX() == 2 && robot.getY() == 19)) {
                 isEnding = true;
                 if (!isFastPath) {
@@ -110,7 +127,9 @@ public class Race {
                     isFastPath = true;
                     isEnding = false;
                 }
+
                 isPreparingFastPath = true;
+
                 robot.enableCalibration();
             }
 
@@ -122,36 +141,49 @@ public class Race {
                     isBashing = false;
                     actionList.remove(0);
                 }
-            } else if (isPreparingFastPath && actionList.size() == 0) {
-                doCalibration();
+            }
+
+
+            // Start finding out the shortest path
+            else if (isPreparingFastPath && actionList.size() == 0) {
+                // doCalibration();
                 if(actionList.isEmpty()){
-                    if(robot.getX() == 14 && robot.getY() == 2) break;
+
+                    if(robot.getX() == 14 && robot.getY() == 2)
+                        break;
+
                     isPreparingFastPath = false;
-                    fastPathOptim();
-                    String pS = getFastPathActionList();
+
+                    fastPathOptim(); //Do what?
+
+                    String pS = getFastPathActionList(); //Shortest Path Finding
                     int dir = robot.getDirection();
+
                     while(!"".equals(pS) && (pS.charAt(0)== 'A' || pS.charAt(0)== 'a' || pS.charAt(0)== 'D' || pS.charAt(0)== 'd')){
                         if(pS.charAt(0)== 'A' || pS.charAt(0)== 'a' ) robot.turnLeft();
                         if(pS.charAt(0)== 'D' || pS.charAt(0)== 'd' ) robot.turnRight();
-                        write(""+pS.charAt(0));
+                        write("" + pS.charAt(0));
                         read();
                         pS = deleteCharAt(pS, 0);
                     }
+
                     if (robot.getDirection() == NORTH) {
                          write("A");read();
                          write("X");read();
                          write("D");read();
                          write("2");read();
                          char tempC = pS.charAt(0);
-                         tempC-=32;
+                         tempC -= 32;
                          pS = deleteCharAt(pS, 0);
                          pS = tempC + pS;
                          
-                      } else if (robot.getDirection() == EAST) {
+                    }
+                    else if (robot.getDirection() == EAST) {
                          write("D");read();
                          write("X");read();
                          write("A");read();
-                     }
+                    }
+
                     robot.setDirection(dir);
                     
                     /* if(directionToBashFound){
@@ -175,6 +207,7 @@ public class Race {
                     read();
                 
                     isForLocalTesting = true;
+
                     if(isForLocalTesting)try {Thread.sleep((long) 3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -187,27 +220,28 @@ public class Race {
                    System.out.println("Dash to goal UI no ready!" );
                     break;
                 }*/
-                doCalibration();
+
+                // doCalibration();
                 if(actionList.isEmpty()) {
                     if(neededTobreakLoop){
-                                 if(infinLoopCounter>10 || isNeededToGetBack()){
-                                    robot.getPresetWayPt().clear();
-                                    robot.getWaypoint().clear();
+                        if(infinLoopCounter>10 || isNeededToGetBack()){
+                            robot.getPresetWayPt().clear();
+                            robot.getWaypoint().clear();
+                        }
+                        List<PathFinder.Node> path = usePresetWp();
+                        if (path == null) {
+                            path = useUnexploredWp();
+                            // back to start
+                            if (path == null) {
+                                path = getAStarPath(robot.getStartLoc());
+                                if (path == null || path.size() < 2) {
+                                    System.out.println("Error path == null || path.size() < 2 " );
+                                    // break;
                                 }
-                                List<PathFinder.Node> path = usePresetWp();
-                                if (path == null) {
-                                    path = useUnexploredWp();
-                                    // back to start
-                                    if (path == null) {
-                                        path = getAStarPath(robot.getStartLoc());
-                                        if (path == null || path.size() < 2) {
-                                              System.out.println("Error path == null || path.size() < 2 " );
-                                           // break;
-                                        }
-                                    }
-                                }
-                                ArrayList<Integer> arrL = getMoveMent(path, robot.getDirection());
-                                actionList.add(arrL.get(0));
+                            }
+                        }
+                        ArrayList<Integer> arrL = getMoveMent(path, robot.getDirection());
+                        actionList.add(arrL.get(0));
                     }
                     if (actionList.size() == 0){
                         int action = robot.getMovement(map);
@@ -219,36 +253,53 @@ public class Race {
                     robot.updateCalibrationCounter();
                 }
             }
+
             switch (actionList.get(0)) {
-                case MOVEFORWARD:moveForward(1);break;
-                case TURNLEFT:turnLeft();break;
-                case TURNRIGHT:turnRight();break;
-                case ALIGNMENT:doAlignment(robot.getTypeAlignment(map));break;
-                case START_FASTER_PATH: break;
-                default:System.out.println("unknown action in actionList");break;
+                case MOVEFORWARD:
+                    moveForward(1);
+                    break;
+                case TURNLEFT:
+                    turnLeft();
+                    break;
+                case TURNRIGHT:
+                    turnRight();
+                    break;
+                case ALIGNMENT:
+                    doAlignment(robot.getTypeAlignment(map));
+                    break;
+                case START_FASTER_PATH:
+                    break;
+                default:
+                    System.out.println("unknown action in actionList");
+                    break;
             }
+
             actionList.remove(0);
             
             if(loopCounter > 25){
-                loopCounter =0;
+                loopCounter = 0;
                 infinLoopCounter++;
                 neededTobreakLoop = true;
                 map.resetSensePriory();
             }
+
             if (!isFastPath && robot.getX() == 14 && robot.getY() == 2) {
                     isTracking = true;
-                    if(!neededTobreakLoop) robot.getPresetWayPt().clear();
-                }
+                    if(!neededTobreakLoop)
+                        robot.getPresetWayPt().clear();
+            }
+
             if (isTracking == true && (oldRx != robot.getX() || oldRy != robot.getY())) {
                 oldRx = robot.getX();
                 oldRy = robot.getY();
                 XCoordinatorList.add(robot.getX());
                 YCoordinatorList.add(robot.getY());
-             }
-
+            }
 
         }
     }
+
+
     void doCalibration(){
         int calib = robot.checkCalibration(map);
 
@@ -279,6 +330,7 @@ public class Race {
         }
         return path;
     }
+
     private List<PathFinder.Node> useUnexploredWp() {
 
         List<PathFinder.Node> path = null;
@@ -515,12 +567,13 @@ public class Race {
          if(newPath != null) path=newPath;
          ArrayList<Integer> arrL = getMoveMent(path, robot.getDirection());
          
-        ArrayList<Integer> bestPath=null;
+        ArrayList<Integer> bestPath;
         if(arrL.size() < fastPath.size()-3) bestPath = arrL;          
         else bestPath = fastPath;
         for (int i = 0; i < bestPath.size(); i++)actionList.add(bestPath.get(i));
         return getFasterpathMove(bestPath);
     }
+
     List<PathFinder.Node>  directlyToGoal(List<PathFinder.Node> path){
         int direction = robot.getDirection();
         
@@ -584,17 +637,20 @@ public class Race {
         robot.setX(2); robot.setY(19);robot.setDirection(direction);
         return null;
     }
+
     boolean isCollided(float x1, float y1, float x2, float y2, double dis, float growRate){
         double xDif = x1 - x2;
         double yDif = y1 - y2;
         double distanceSquared = xDif * xDif + yDif * yDif;
         return distanceSquared < (1.3 + 0.5+dis*growRate+growRate) * (1.3 + 0.5+dis*growRate + growRate);
     }
+
     boolean isAllForward(ArrayList<Integer>  aList, int s, int e){
         for (int i = s; i <= e; i++)if(aList.get(i) != MOVEFORWARD)return false;
         return true;
     }
-   String getFasterpathMove(ArrayList<Integer>  aList){
+
+    String getFasterpathMove(ArrayList<Integer>  aList){
        String str = "";
        int mSteps,turnWhere, oldRotX= robot.getX(), oldRotY= robot.getY(), oldDir= robot.getDirection();
        for (int i = 0; i < aList.size(); i++){
@@ -769,6 +825,23 @@ public class Race {
         return   isTracking || 80 <= robot.getPercentCellCovered(); //percentToCover = 50
     }
 
+    // Perform robot actions
+    void turnLeft() {
+        loopCounter++;
+        char c = 'A';
+        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
+        robot.turnLeft();
+        writeToArduino("" + c);
+    }
+
+    void turnRight() {
+        loopCounter++;
+        char c = 'D';
+        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
+        robot.turnRight();
+        writeToArduino("" + c);
+    }
+
     void moveForward(int nSteps) {
         loopCounter++;
         /*String toSend = "";
@@ -794,31 +867,23 @@ public class Race {
         c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c); */
         //write(toSend);
         for(int i =0; i < nSteps; i++){
-             robot.moveForward();
-             if(isFastPath)this.map.setColor(robot.getX(), robot.getY(), PATH);
-             else {
-                 this.map.setColor(robot.getX(), robot.getY(), ROBOTB);
-                 if((this.map.getNewCell())[robot.getY()][robot.getX()].getColor() != PATH)
-                     loopCounter =0;
-   
-             }
+            robot.moveForward();
+            if(isFastPath)this.map.setColor(robot.getX(), robot.getY(), PATH);
+            else {
+                this.map.setColor(robot.getX(), robot.getY(), ROBOTB);
+                if((this.map.getNewCell())[robot.getY()][robot.getX()].getColor() != PATH)
+                    loopCounter =0;
+
+            }
         }
     }
 
-    void turnLeft() {
-        loopCounter++;
-        char c = 'A';
-        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
-        robot.turnLeft();
-        writeToArduino(""+c);
-    }
-
-    void turnRight() {
-        loopCounter++;
-        char c = 'D';
-        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
-        robot.turnRight();
-        writeToArduino(""+c);
+    public static void sendObstacle(int x, int y) {
+        if (noBT) return;
+        x -= 1;
+        y -= 1;
+        String toSend = "ADDOBSTACLE:" + x + "," + y;
+        Client.writeToAndroid(toSend);
     }
 
     void doAlignment(int type) {
@@ -832,13 +897,10 @@ public class Race {
         if(type == -1) System.out.println("doAlignment Error----------------Error!");
     }
 
-    public static void sendObstacle(int x, int y) {
-        if (noBT) return;
-        x -= 1; y -= 1;
-        String toSend = "ADDOBSTACLE:" + x + "," + y;
-        Client.writeToAndroid(toSend);
+    // Auxiliary functions: No assumption about robot, and it can be re-used
+    private static String deleteCharAt(String strValue, int index) {
+        return strValue.substring(0, index) + strValue.substring(index + 1);
     }
-
 }
 
 

@@ -12,12 +12,16 @@ import Robot.MDPRobot;
  *
  * @author TQN
  */
+
+// TODO: Make the mapping more proper
+
 public class ActionSelection {
     static public int dataReliablilty = 1;
     static public int []distancesFromSensor = new int[6];
+
     public static void senseAll(CoveredMap map, MDPRobot robot, String str) {
         String[] sensorData = str.split(",");
-         for (int i = 0; i < sensorData.length; i++) {
+        for (int i = 0; i < sensorData.length; i++) {
             int dist = Integer.parseInt(sensorData[i]);
             distancesFromSensor[i] = dist;
         }
