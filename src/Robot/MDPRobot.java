@@ -354,61 +354,115 @@ public class MDPRobot implements RobotData, MapData {
     }
 
 
-    boolean checkObstacle(int d){
-         return (0<=d) && (d<=11);
-     }
+    /**
+     * int checkObstacle
+     * @param distance: distance in cm
+     * @param type: type of sensor
+     *            1: Front IR
+     *            2: Right IR
+     *            3: Left US
+     * @return how many grids away the obstacle is
+     */
+    int checkObstacle(int distance, int type) {
+        switch (type) {
+            case 1:
+                if (distance < 7) return -1;
+                else if (distance <= 11) return 1;
+                else if (distance <= 22) return 2;
+                else if (distance <= 32) return 3;
+                else return 100;
+
+            case 2:
+                if (distance < 7) return -1;
+                else if (distance <= 9) return 1;
+                else if (distance <= 19) return 2;
+                else if (distance <= 30) return 3;
+                else return 200;
+
+            case 3:
+                if (distance < 4) return -1;
+                else if (distance <= 7) return 1;
+                else if (distance <= 15) return 2;
+                else if (distance <= 26) return 3;
+                else if (distance <= 36) return 4;
+                else if (distance <= 46) return 5;
+                else if (distance <= 56) return 6;
+                else if (distance <= 66) return 7;
+                else if (distance <= 76) return 8;
+                else return 300;
+        }
+        return -1;
+    }
 
     public void senseFL(CoveredMap map, int distance) {
-        if (checkObstacle(distance)) {
-           paintFLWall(map, 1);
-        } 
+        int d = checkObstacle(distance, 1);
+        if (d == -1) return;
+        if (d == 100) {
+            paintFLFree(map, 4);
+        }
         else {
-            paintFLFree(map, 2);
+            paintFLWall(map, d);
+            paintFLFree(map, d);
         }
     }
 
     public void senseFM(CoveredMap map, int distance) {
-        if (checkObstacle(distance)) {
-            paintFMWall(map, 1);
+        int d = checkObstacle(distance, 1);
+        if (d == -1) return;
+        if (d == 100) {
+            paintFMFree(map, 4);
         }
         else {
-            paintFMFree(map, 2);
+            paintFMWall(map, d);
+            paintFMFree(map, d);
         }
     }
 
     public void senseFR(CoveredMap map, int distance) {
-        if (checkObstacle(distance)) {
-            paintFRWall(map, 1);
+        int d = checkObstacle(distance, 1);
+        if (d == -1) return;
+        if (d == 100) {
+            paintFRFree(map, 4);
         }
         else {
-            paintFRFree(map, 2);
+            paintFRWall(map, d);
+            paintFRFree(map, d);
         }
     }
 
     public void senseLS(CoveredMap map, int distance) {
-        if (checkObstacle(distance)) {
-            paintLSWall(map, 1);
+        int d = checkObstacle(distance, 3);
+        if (d == -1) return;
+        if (d == 300) {
+            paintLSFree(map, 9);
         }
         else {
-            paintLSFree(map, 2);
+            paintLSWall(map, d);
+            paintLSFree(map, d);
         }
     }
 
     public void senseRU(CoveredMap map, int distance) {
-        if (checkObstacle(distance)) {
-            paintRUWall(map, 1);
+        int d = checkObstacle(distance, 2);
+        if (d == -1) return;
+        if (d == 200) {
+            paintRUFree(map, 4);
         }
         else {
-            paintRUFree(map, 2);
+            paintRUWall(map, d);
+            paintRUFree(map, d);
         }
     }
 
     public void senseRL(CoveredMap map, int distance) {
-        if (checkObstacle(distance)) {
-            paintRLWall(map, 1);
+        int d = checkObstacle(distance, 2);
+        if (d == -1) return;
+        if (d == 200) {
+            paintRLFree(map, 4);
         }
         else {
-            paintRLFree(map, 2);
+            paintRLWall(map, d);
+            paintRLFree(map, d);
         }
     }
 
