@@ -40,7 +40,7 @@ final public class RaceMain {
         } while (!connected);
         System.out.println("connection created!");
         //String[] robotInfo = read().split(",");
-        String[] robotInfo = "2,19,4".split(",");
+        String[] robotInfo = "14,19,4".split(",");
 
         // Map creation
         RealMap real = new RealMap();
@@ -85,9 +85,9 @@ final public class RaceMain {
             System.out.println(e.getMessage());
         }
 
-        Race race = new Race(bot, map);
-        race.mainLoop();
-        /*
+        /*Race race = new Race(bot, map);
+        race.mainLoop();*/
+
         write("e\n");
         Client.read();
         for (int i = 0; i < 1; i++) {
@@ -95,6 +95,6 @@ final public class RaceMain {
             String readData = read();
             System.out.println("Sensor info: " + readData);
             //Client.write(control[0]);
-        } */
+        }
     }
 }

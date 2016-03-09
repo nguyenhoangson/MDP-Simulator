@@ -658,24 +658,24 @@ public class MDPRobot implements RobotData, MapData {
         Cell [][]cells = map.getNewCell();
         switch (this.direction) {
             case NORTH:
-                if (cells[y - 2][x - 2].getColor() == WALL && cells[y - 2][x + 2].getColor() == WALL && cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL && cells[y - 2][x ].getColor() == WALL) return ALIGHMENT_1;
-                else if (cells[y - 2][x].getColor() == WALL && cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x-2].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL) return ALIGHMENT_2;
-                else if (cells[y - 2][x].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x+2].getColor() == WALL && cells[y - 2][x - 1].getColor() == WALL) return ALIGHMENT_3;
+                if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL) return ALIGNMENT_1;
+                else if (cells[y - 1][x + 2].getColor() == WALL && cells[y +1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL) return ALIGNMENT_2;
+                // else if (cells[y - 2][x].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x+2].getColor() == WALL && cells[y - 2][x - 1].getColor() == WALL) return ALIGNMENT_3;
                 break;
             case EAST:
-                if (cells[y - 2][x + 2].getColor() == WALL && cells[y + 2][x + 2].getColor() == WALL && cells[y - 1][x + 2].getColor() == WALL && cells[y + 1][x + 2].getColor() == WALL && cells[y ][x + 2].getColor() == WALL) return ALIGHMENT_1;
-                else if (cells[y][x +2].getColor() == WALL && cells[y - 1][x + 2].getColor() == WALL && cells[y-2][x +2].getColor() == WALL && cells[y + 1][x + 2].getColor() == WALL) return ALIGHMENT_2;
-                else if (cells[y][x +2].getColor() == WALL && cells[y + 1][x + 2].getColor() == WALL && cells[y+2][x +2].getColor() == WALL && cells[y - 1][x + 2].getColor() == WALL) return ALIGHMENT_3;
+                if (cells[y - 1][x + 2].getColor() == WALL && cells[y + 1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL) return ALIGNMENT_1;
+                else if (cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL) return ALIGNMENT_2;
+                // else if (cells[y][x +2].getColor() == WALL && cells[y + 1][x + 2].getColor() == WALL && cells[y+2][x +2].getColor() == WALL && cells[y - 1][x + 2].getColor() == WALL) return ALIGNMENT_3;
                 break;
             case SOUTH:
-                if (cells[y + 2][x - 2].getColor() == WALL && cells[y + 2][x + 2].getColor() == WALL && cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL) return ALIGHMENT_1;
-                else if (cells[y + 2][x].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL && cells[y + 2][x+2].getColor() == WALL && cells[y + 2][x - 1].getColor() == WALL) return ALIGHMENT_2;
-                else if (cells[y +2][x].getColor() == WALL && cells[y + 2][x - 1].getColor() == WALL && cells[y +2][x-2].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL) return ALIGHMENT_3;
+                if (cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL) return ALIGNMENT_1;
+                else if (cells[y + 1][x - 2].getColor() == WALL && cells[y - 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL) return ALIGNMENT_2;
+                // else if (cells[y +2][x].getColor() == WALL && cells[y + 2][x - 1].getColor() == WALL && cells[y +2][x-2].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL) return ALIGNMENT_3;
                 break;
             case WEST:
-                if (cells[y - 2][x - 2].getColor() == WALL && cells[y + 2][x - 2].getColor() == WALL && cells[y - 1][x - 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL) return ALIGHMENT_1;
-                else if (cells[y][x- 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL && cells[y+2][x- 2].getColor() == WALL && cells[y - 1][x - 2].getColor() == WALL) return ALIGHMENT_2;
-                else if (cells[y][x- 2].getColor() == WALL && cells[y - 1][x - 2].getColor() == WALL && cells[y-2][x- 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL) return ALIGHMENT_3;
+                if (cells[y - 1][x - 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL) return ALIGNMENT_1;
+                else if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL) return ALIGNMENT_2;
+                // else if (cells[y][x- 2].getColor() == WALL && cells[y - 1][x - 2].getColor() == WALL && cells[y-2][x- 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL) return ALIGNMENT_3;
                 break;
         }
         return -1;

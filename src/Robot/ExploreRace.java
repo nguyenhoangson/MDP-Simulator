@@ -105,14 +105,14 @@ public class ExploreRace implements RobotData, MapData {
             } else if (isPreparingFastPath && actionList.size() == 0) {
                 int calib = robot.checkCalibration(map);
                 if (calib == MOVEFORWARD) {
-                    actionList.add(ALIGHMENT);
+                    actionList.add(ALIGNMENT);
                 } else if (calib == TURNLEFT) {
                     actionList.add(TURNLEFT);
-                    actionList.add(ALIGHMENT);
+                    actionList.add(ALIGNMENT);
                     actionList.add(TURNRIGHT);
                 } else if (calib == TURNRIGHT) {
                     actionList.add(TURNRIGHT);
-                    actionList.add(ALIGHMENT);
+                    actionList.add(ALIGNMENT);
                     actionList.add(TURNLEFT);
                 } else {
                     if(robot.getX() == 14 && robot.getY() == 2) break;
@@ -130,14 +130,14 @@ public class ExploreRace implements RobotData, MapData {
             if (actionList.size() == 0) {
                 int calib = robot.checkCalibration(map);
                 if (calib == MOVEFORWARD) {
-                    actionList.add(ALIGHMENT);
+                    actionList.add(ALIGNMENT);
                 } else if (calib == TURNLEFT) {
                     actionList.add(TURNLEFT);
-                    actionList.add(ALIGHMENT);
+                    actionList.add(ALIGNMENT);
                     actionList.add(TURNRIGHT);
                 } else if (calib == TURNRIGHT) {
                     actionList.add(TURNRIGHT);
-                    actionList.add(ALIGHMENT);
+                    actionList.add(ALIGNMENT);
                     actionList.add(TURNLEFT);
                 } else {
                     actionList.add(robot.getMovement(map));
@@ -153,8 +153,8 @@ public class ExploreRace implements RobotData, MapData {
                 case TURNRIGHT:
                     robot.turnRight();
                     break;
-                case ALIGHMENT:
-                    System.out.println("ALIGHMENT TYPE: " + robot.getTypeAlignment(map));
+                case ALIGNMENT:
+                    System.out.println("ALIGNMENT TYPE: " + robot.getTypeAlignment(map));
                     break;
                 default:
                     System.out.println("unknown action in actionList");

@@ -47,6 +47,16 @@ public class Client {
         }
     }
 
+    public static void writeToArduino(String msg) {
+        String toWrite = "R:" + msg + "\n";
+        write(toWrite);
+    }
+
+    public static void writeToAndroid(String msg) {
+        String toWrite = "N:" + msg + "\n";
+        write(toWrite);
+    }
+
     public static String read() {
         //array for storing distances in order: FL, FM, FR, LS, RU, RL
         if(isForLocalTesting) return "1000,1000,1000,1000,1000,1000";

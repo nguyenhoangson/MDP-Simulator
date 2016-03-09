@@ -8,10 +8,10 @@ package Race;
 import AStar.Algorithm;
 import AStar.Algorithm3B3;
 import AStar.PathFinder;
-import static Race.Client.isForLocalTesting;
-import static Race.Client.read;
-import static Race.Client.write;
+
 import java.io.IOException;
+
+import static Race.Client.*;
 import static java.lang.Math.PI;
 import static java.lang.Math.asin;
 import static java.lang.Math.sqrt;
@@ -27,10 +27,10 @@ import static Map.MapData.PATH;
 import static Map.MapData.ROBOTB;
 import static Map.MapData.ROWS;
 import static Robot.FastestPath.getMoveMent;
-import static Robot.RobotData.ALIGHMENT;
-import static Robot.RobotData.ALIGHMENT_1;
-import static Robot.RobotData.ALIGHMENT_2;
-import static Robot.RobotData.ALIGHMENT_3;
+import static Robot.RobotData.ALIGNMENT;
+import static Robot.RobotData.ALIGNMENT_1;
+import static Robot.RobotData.ALIGNMENT_2;
+import static Robot.RobotData.ALIGNMENT_3;
 import static Robot.RobotData.EAST;
 import static Robot.RobotData.MOVEFORWARD;
 import static Robot.RobotData.NORTH;
@@ -222,7 +222,7 @@ public class Race {
                 case MOVEFORWARD:moveForward(1);break;
                 case TURNLEFT:turnLeft();break;
                 case TURNRIGHT:turnRight();break;
-                case ALIGHMENT:doAlignment(robot.getTypeAlignment(map));break;
+                case ALIGNMENT:doAlignment(robot.getTypeAlignment(map));break;
                 case START_FASTER_PATH: break;
                 default:System.out.println("unknown action in actionList");break;
             }
@@ -252,14 +252,14 @@ public class Race {
         int calib = robot.checkCalibration(map);
 
         if (calib == MOVEFORWARD) {
-            actionList.add(ALIGHMENT);
+            actionList.add(ALIGNMENT);
         } else if (calib == TURNLEFT) {
             actionList.add(TURNLEFT);
-            actionList.add(ALIGHMENT);
+            actionList.add(ALIGNMENT);
             actionList.add(TURNRIGHT);
         } else if (calib == TURNRIGHT) {
             actionList.add(TURNRIGHT);
-            actionList.add(ALIGHMENT);
+            actionList.add(ALIGNMENT);
             actionList.add(TURNLEFT);
         }
     }
@@ -770,7 +770,9 @@ public class Race {
 
     void moveForward(int nSteps) {
         loopCounter++;
-        String toSend = "W" + nSteps;
+        /*String toSend = "";
+        for (int i = 1; i<=nSteps; i++) toSend += "W"; */
+        for (int i = 1; i<=nSteps; i++) writeToArduino("W");
         /* char c = 'W';
         if(nSteps == 1 ) c = 'W';
         if(nSteps == 2 ) c = 'N';
@@ -789,7 +791,7 @@ public class Race {
         if(nSteps == 15 ) c = 'F';
         if(nSteps == 16 ) c = 'U';
         c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c); */
-        write(toSend);
+        //write(toSend);
         for(int i =0; i < nSteps; i++){
              robot.moveForward();
              if(isFastPath)this.map.setColor(robot.getX(), robot.getY(), PATH);
@@ -800,15 +802,14 @@ public class Race {
    
              }
         }
-
-       
     }
+
     void turnLeft() {
         loopCounter++;
         char c = 'A';
         c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         robot.turnLeft();
-        write(""+c);
+        writeToArduino(""+c);
     }
 
     void turnRight() {
@@ -816,20 +817,18 @@ public class Race {
         char c = 'D';
         c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         robot.turnRight();
-        write(""+c);
+        writeToArduino(""+c);
     }
 
     void doAlignment(int type) {
-        /*return;
         loopCounter++;
         char c = 'C';
-        if(type == ALIGHMENT_1) c = 'X';
-        if(type == ALIGHMENT_2) c = 'Y';
-        if(type == ALIGHMENT_3) c = 'Z';
+        if(type == ALIGNMENT_1) c = 'B';
+        if(type == ALIGNMENT_2) c = 'V';
+        if(type == ALIGNMENT_3) c = 'C';
         c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
-        write("" + c);
-        
-        if(type == -1) System.out.println("doAlignment Error----------------Error!"); */
+        writeToArduino("" + c);
+        if(type == -1) System.out.println("doAlignment Error----------------Error!");
     }
 
 }
