@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.lang.InterruptedException;
+import Race.Race;
 
 public class Client {
 
@@ -38,7 +39,7 @@ public class Client {
            // System.out.println("to be sent:" + msg);
             out.print(msg);
             out.flush();
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Write error: " + e.getMessage());
             System.out.println("re -connecting...");
             Client.setUp(ip, port);
@@ -53,6 +54,7 @@ public class Client {
     }
 
     public static void writeToAndroid(String msg) {
+        if (Race.noBT) return;
         String toWrite = "N:" + msg + "\n";
         write(toWrite);
     }
@@ -60,7 +62,7 @@ public class Client {
     public static String read() {
         //array for storing distances in order: FL, FM, FR, LS, RU, RL
         if(isForLocalTesting) return "1000,1000,1000,1000,1000,1000";
-
+        System.out.println("Trying to read: ");
         String inStr;
         Scanner sc;
         try {
@@ -91,7 +93,7 @@ public class Client {
 
             // Only send the message when connection is ready
             for(int i = 0; i < 10; i++){
-                testClient.write("WUTTT\n");
+                testClient.write("D\n");
             }
 
             System.out.println("Trying to read from RPi...");

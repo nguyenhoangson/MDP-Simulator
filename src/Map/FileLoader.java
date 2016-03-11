@@ -5,6 +5,8 @@
  */
 package Map;
 
+import Race.Client;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -132,13 +134,17 @@ public class FileLoader {
             }
         }
         str += "11";
+        String toN = "";
         bw.write("11\n\nExplored string 1: \n");
         for (int i = 0; i < str.length(); i += 4) {
             String hex = str.substring(i, i + 4);
             int k = Integer.parseInt(hex, 2);
             String hexString = Integer.toHexString(k);
             bw.write(hexString);
+            toN += hexString;
         }
+        Client.writeToAndroid("MDF:" + toN);
+        toN = "";
         bw.write("\n\nExplored part 2:\n");
 
         str = "";
@@ -181,7 +187,9 @@ public class FileLoader {
             int k = Integer.parseInt(hex, 2);
             String hexString = Integer.toHexString(k);
             bw.write(hexString);
+            toN += hexString;
         }
+        Client.writeToAndroid("MDF:" + toN);
         bw.write("\n");
         bw.close();
 

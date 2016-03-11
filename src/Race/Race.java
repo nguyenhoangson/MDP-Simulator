@@ -17,6 +17,8 @@ import static java.lang.Math.sqrt;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+
 import Map.CoveredMap;
 import Robot.MDPRobot;
 import static Map.FileLoader.saveExploreTextFile;
@@ -67,7 +69,7 @@ public class Race {
     boolean isfirstRepeatPath = false;
     int infinLoopCounter = 0;
 
-    public static final boolean noBT = true;
+    public static final boolean noBT = false;
 
     int directionToBash = -1;
     boolean directionToBashFound = false;
@@ -86,23 +88,42 @@ public class Race {
         writeToArduino("E");
         System.out.println("Reading from RPI...");
         read();
-        actionList.add(TURNRIGHT);
-       
+        actionList.add(ALIGNMENT);
+
     }
 
+    public static boolean preCali = false;
+    public static boolean firstTime = true;
+
     public void mainLoop() throws Exception {
-
+        int ct = 0;
         String stringDecision; // String used to decide what will be the next action to take
-
+        boolean readingDone;
+        String readAgain = null;
+        while (true) {
+            if (noBT) break;
+            stringDecision = read();
+            if (stringDecision == "EXPLORE"); break;
+        }
         while(true) {
+            System.out.println("Loop " + (++ct) + " times");
             // Array for storing distances in order: FR, FL, FM, LS, RU, RL
+            do {
+                // Get sensor info
+                if (firstTime) {
+                    writeToArduino("E");
+                    firstTime = false;
+                }
+                if (readAgain != null) {
+                    stringDecision = readAgain;
+                    readAgain = null;
+                }
+                else
+                    stringDecision = isForLocalTesting  ? robot.getSenseData(map) : read();
+                readingDone = (stringDecision.indexOf('D') == -1);
+                System.out.println("Received:" + stringDecision);
 
-            writeToArduino("E");
-
-            // Get sensor info
-            stringDecision = isForLocalTesting  ? robot.getSenseData(map) : read();
-
-            System.out.println("Received:" + stringDecision);
+            } while (!readingDone);
 
             // Get the sensor information to choose what will be the next action
             if(!isFastPath)
@@ -253,7 +274,7 @@ public class Race {
                     robot.updateCalibrationCounter();
                 }
             }
-
+            if (!preCali) if ((robot.getTypeAlignment(map) != -1)) actionList.add(ALIGNMENT);
             switch (actionList.get(0)) {
                 case MOVEFORWARD:
                     moveForward(1);
@@ -274,14 +295,16 @@ public class Race {
                     break;
             }
 
+            readAgain = waitForResponse();
+
             actionList.remove(0);
             
-            if(loopCounter > 25){
+            /* if(loopCounter > 25){
                 loopCounter = 0;
                 infinLoopCounter++;
                 neededTobreakLoop = true;
                 map.resetSensePriory();
-            }
+            } */
 
             if (!isFastPath && robot.getX() == 14 && robot.getY() == 2) {
                     isTracking = true;
@@ -297,6 +320,7 @@ public class Race {
             }
 
         }
+        System.out.println("Finish main loop");
     }
 
 
@@ -822,57 +846,43 @@ public class Race {
    }
    
     private boolean isNeededToGetBack() {
-        return   isTracking || 80 <= robot.getPercentCellCovered(); //percentToCover = 50
+        //return   isTracking || 100 <= robot.getPercentCellCovered(); //percentToCover = 50
+        return robot.getPercentCellCovered() >= 100;
     }
 
     // Perform robot actions
     void turnLeft() {
+        preCali = false;
         loopCounter++;
         char c = 'A';
-        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         robot.turnLeft();
         writeToArduino("" + c);
+        writeToAndroid("" + c);
     }
 
     void turnRight() {
+        preCali = false;
         loopCounter++;
         char c = 'D';
-        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         robot.turnRight();
         writeToArduino("" + c);
+        writeToAndroid("" + c);
     }
 
     void moveForward(int nSteps) {
+        preCali = false;
         loopCounter++;
-        /*String toSend = "";
-        for (int i = 1; i<=nSteps; i++) toSend += "W"; */
+
         for (int i = 1; i<=nSteps; i++) writeToArduino("W");
-        /* char c = 'W';
-        if(nSteps == 1 ) c = 'W';
-        if(nSteps == 2 ) c = 'N';
-        if(nSteps == 3 ) c = 'M';
-        if(nSteps == 4 ) c = 'H';
-        if(nSteps == 5 ) c = 'J';
-        if(nSteps == 6 ) c = 'K';
-        if(nSteps == 7 ) c = 'L';
-        if(nSteps == 8 ) c = 'O';
-        if(nSteps == 9 ) c = 'P';
-        if(nSteps == 10 ) c = 'E';
-        if(nSteps == 11 ) c = 'R';
-        if(nSteps == 12 ) c = 'C';
-        if(nSteps == 13 ) c = 'V';
-        if(nSteps == 14 ) c = 'B';
-        if(nSteps == 15 ) c = 'F';
-        if(nSteps == 16 ) c = 'U';
-        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c); */
-        //write(toSend);
-        for(int i =0; i < nSteps; i++){
+        for (int i = 1; i<=nSteps; i++) writeToAndroid("W");
+
+        for(int i =0; i < nSteps; i++) {
             robot.moveForward();
             if(isFastPath)this.map.setColor(robot.getX(), robot.getY(), PATH);
             else {
                 this.map.setColor(robot.getX(), robot.getY(), ROBOTB);
                 if((this.map.getNewCell())[robot.getY()][robot.getX()].getColor() != PATH)
-                    loopCounter =0;
+                    loopCounter = 0;
 
             }
         }
@@ -887,19 +897,31 @@ public class Race {
     }
 
     void doAlignment(int type) {
+        if (type == -1) return;
         loopCounter++;
         char c = 'C';
         if(type == ALIGNMENT_1) c = 'B';
         if(type == ALIGNMENT_2) c = 'V';
         if(type == ALIGNMENT_3) c = 'C';
-        c = (char) (robot.isLeftCalibrationAvailable(map) ? c+32 : c);
         writeToArduino("" + c);
-        if(type == -1) System.out.println("doAlignment Error----------------Error!");
+        preCali = true;
     }
 
     // Auxiliary functions: No assumption about robot, and it can be re-used
     private static String deleteCharAt(String strValue, int index) {
         return strValue.substring(0, index) + strValue.substring(index + 1);
+    }
+
+    public String waitForResponse() {
+        while (true) {
+            try {
+                Thread.sleep(2500);
+                String rec = read();
+                if (rec != null && rec != "") return rec;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
 

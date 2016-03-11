@@ -368,27 +368,27 @@ public class MDPRobot implements RobotData, MapData {
             case 1:
                 if (distance < 7) return -1;
                 else if (distance <= 11) return 1;
-                else if (distance <= 22) return 2;
-                else if (distance <= 32) return 3;
+                /*else if (distance <= 22) return 2;
+                else if (distance <= 32) return 3; */
                 else return 100;
 
             case 2:
                 if (distance < 7) return -1;
                 else if (distance <= 9) return 1;
-                else if (distance <= 19) return 2;
-                else if (distance <= 30) return 3;
+                /*else if (distance <= 19) return 2;
+                else if (distance <= 30) return 3; */
                 else return 200;
 
             case 3:
                 if (distance < 4) return -1;
                 else if (distance <= 7) return 1;
-                else if (distance <= 15) return 2;
+                /*else if (distance <= 15) return 2;
                 else if (distance <= 26) return 3;
                 else if (distance <= 36) return 4;
                 else if (distance <= 46) return 5;
                 else if (distance <= 56) return 6;
                 else if (distance <= 66) return 7;
-                else if (distance <= 76) return 8;
+                else if (distance <= 76) return 8; */
                 else return 300;
         }
         return -1;
@@ -757,26 +757,25 @@ public class MDPRobot implements RobotData, MapData {
     public int getTypeAlignment(CoveredMap map) {
 
         Cell [][]cells = map.getNewCell();
+        if ( (this.x == 2 && this.y == 2) || (this.x == 2 && this.y == 19)
+                || (this.x == 14 && this.y == 2) || (this.x == 14 && this.y == 19) )
+            return 3;
         switch (this.direction) {
             case NORTH:
                 if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL) return ALIGNMENT_1;
                 else if (cells[y - 1][x + 2].getColor() == WALL && cells[y +1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL) return ALIGNMENT_2;
-                // else if (cells[y - 2][x].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x+2].getColor() == WALL && cells[y - 2][x - 1].getColor() == WALL) return ALIGNMENT_3;
                 break;
             case EAST:
                 if (cells[y - 1][x + 2].getColor() == WALL && cells[y + 1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL) return ALIGNMENT_1;
                 else if (cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL) return ALIGNMENT_2;
-                // else if (cells[y][x +2].getColor() == WALL && cells[y + 1][x + 2].getColor() == WALL && cells[y+2][x +2].getColor() == WALL && cells[y - 1][x + 2].getColor() == WALL) return ALIGNMENT_3;
                 break;
             case SOUTH:
                 if (cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL) return ALIGNMENT_1;
                 else if (cells[y + 1][x - 2].getColor() == WALL && cells[y - 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL) return ALIGNMENT_2;
-                // else if (cells[y +2][x].getColor() == WALL && cells[y + 2][x - 1].getColor() == WALL && cells[y +2][x-2].getColor() == WALL && cells[y + 2][x + 1].getColor() == WALL) return ALIGNMENT_3;
                 break;
             case WEST:
                 if (cells[y - 1][x - 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL) return ALIGNMENT_1;
                 else if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL) return ALIGNMENT_2;
-                // else if (cells[y][x- 2].getColor() == WALL && cells[y - 1][x - 2].getColor() == WALL && cells[y-2][x- 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL) return ALIGNMENT_3;
                 break;
         }
         return -1;
