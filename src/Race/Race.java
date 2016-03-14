@@ -888,11 +888,12 @@ public class Race {
         }
     }
 
-    public static void sendObstacle(int x, int y) {
+    public static void sendObstacleData(int x, int y, boolean add) {
         if (noBT) return;
         x -= 1;
         y -= 1;
-        String toSend = "ADDOBSTACLE:" + x + "," + y;
+        String toSend = add ? "ADD" : "REMOVE";
+        toSend += "OBSTACLE:" + x + "," + y;
         Client.writeToAndroid(toSend);
     }
 
@@ -915,7 +916,7 @@ public class Race {
     public String waitForResponse() {
         while (true) {
             try {
-                Thread.sleep(2500);
+                Thread.sleep(1500);
                 String rec = read();
                 if (rec != null && rec != "") return rec;
             } catch (Exception e) {

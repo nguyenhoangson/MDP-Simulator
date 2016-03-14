@@ -17,7 +17,7 @@ import Robot.MDPRobot;
 
 public class ActionSelection {
     static public int dataReliablilty = 1;
-    static public int []distancesFromSensor = new int[6];
+    static public int []distancesFromSensor = new int[5];
 
     public static void senseAll(CoveredMap map, MDPRobot robot, String str) {
         String[] sensorData = str.split(",");
@@ -31,7 +31,7 @@ public class ActionSelection {
         robot.senseFM(map, distancesFromSensor[2]);
         robot.senseLS(map, distancesFromSensor[3]);
         robot.senseRU(map, distancesFromSensor[4]);
-        robot.senseRL(map, distancesFromSensor[5]);
+        //robot.senseRL(map, distancesFromSensor[5]);
         
     }
 
