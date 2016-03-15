@@ -69,7 +69,7 @@ public class Race {
     boolean isfirstRepeatPath = false;
     int infinLoopCounter = 0;
 
-    public static final boolean noBT = false;
+    public static final boolean noBT = true;
 
     int directionToBash = -1;
     boolean directionToBashFound = false;
@@ -97,6 +97,8 @@ public class Race {
 
     public void mainLoop() throws Exception {
         int ct = 0;
+        boolean needToCalibrate = false;
+        boolean responded = false;
         String stringDecision; // String used to decide what will be the next action to take
         boolean readingDone;
         String readAgain = null;
@@ -107,7 +109,7 @@ public class Race {
         }
         while(true) {
             System.out.println("Loop " + (++ct) + " times");
-            // Array for storing distances in order: FR, FL, FM, LS, RU, RL
+            // Array for storing distances in order: FR, FL, FM, LS, RS, RL
             do {
                 // Get sensor info
                 if (firstTime) {
@@ -274,19 +276,28 @@ public class Race {
                     robot.updateCalibrationCounter();
                 }
             }
-            if (!preCali) if ((robot.getTypeAlignment(map) != -1)) actionList.add(ALIGNMENT);
+            if (loopCounter % 5 == 0) needToCalibrate = true;
+            if (needToCalibrate)
+                if (!preCali) if ((robot.getTypeAlignment(map) != -1)) {
+                    actionList.add(ALIGNMENT);
+                }
             switch (actionList.get(0)) {
                 case MOVEFORWARD:
                     moveForward(1);
+                    responded = false;
                     break;
                 case TURNLEFT:
                     turnLeft();
+                    responded = false;
                     break;
                 case TURNRIGHT:
                     turnRight();
+                    responded = false;
                     break;
                 case ALIGNMENT:
                     doAlignment(robot.getTypeAlignment(map));
+                    needToCalibrate = false;
+                    responded = false;
                     break;
                 case START_FASTER_PATH:
                     break;
@@ -294,9 +305,8 @@ public class Race {
                     System.out.println("unknown action in actionList");
                     break;
             }
-
-            readAgain = waitForResponse();
-
+            if (!responded) readAgain = waitForResponse();
+            responded = true;
             actionList.remove(0);
             
             /* if(loopCounter > 25){
@@ -914,9 +924,9 @@ public class Race {
     }
 
     public String waitForResponse() {
+        System.out.println("Waiting for responses");
         while (true) {
             try {
-                Thread.sleep(1500);
                 String rec = read();
                 if (rec != null && rec != "") return rec;
             } catch (Exception e) {

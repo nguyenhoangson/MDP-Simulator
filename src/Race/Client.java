@@ -60,7 +60,7 @@ public class Client {
     }
 
     public static String read() {
-        //array for storing distances in order: FL, FM, FR, LS, RU, RL
+        //array for storing distances in order: FL, FM, FR, LS, RS, RL
         if(isForLocalTesting) return "1000,1000,1000,1000,1000,1000";
         System.out.println("Trying to read: ");
         String inStr;
@@ -68,7 +68,6 @@ public class Client {
         try {
             sc = new Scanner(new InputStreamReader(socket.getInputStream()));
             inStr = sc.nextLine();
-            System.out.println(inStr);
             return inStr;
         } catch (Exception e) {
             System.out.println("Read error: " + e.getMessage());

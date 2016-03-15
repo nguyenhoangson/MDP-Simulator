@@ -24,8 +24,8 @@ public interface SensorData {
     int FRUB = 35;
     int LSLB = 3;
     int LSUB = 35;
-    int RULB = 3;
-    int RUUB = 45;
+    int RSLB = 3;
+    int RSUB = 45;
     int RLLB = 3;
     int RLUB = 35;
 }

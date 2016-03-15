@@ -30,7 +30,7 @@ public class ActionSelection {
         robot.senseFL(map, distancesFromSensor[1]);
         robot.senseFM(map, distancesFromSensor[2]);
         robot.senseLS(map, distancesFromSensor[3]);
-        robot.senseRU(map, distancesFromSensor[4]);
+        robot.senseRS(map, distancesFromSensor[4]);
         //robot.senseRL(map, distancesFromSensor[5]);
         
     }

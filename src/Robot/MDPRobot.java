@@ -7,8 +7,8 @@ import Map.MapData;
 import static Robot.SensorData.DATA_VARITATION;
 import static Robot.SensorData.LSLB;
 import static Robot.SensorData.LSUB;
-import static Robot.SensorData.RULB;
-import static Robot.SensorData.RUUB;
+import static Robot.SensorData.RSLB;
+import static Robot.SensorData.RSUB;
 import static Robot.SensorData.RLLB;
 import static Robot.SensorData.RLUB;
 import static Robot.SensorData.FLLB;
@@ -245,7 +245,7 @@ public class MDPRobot implements RobotData, MapData {
 
         str +=addVariation(i*10-10,v) + ",";
 
-        for (i = 0; i <= this.sensorR + 2; i++) { // RU
+        for (i = 0; i <= this.sensorR + 2; i++) { // RS
             switch (this.direction) {
                 case EAST:uncovered1 = map.uncoverACell(this.x + 1, this.y + i, this);break;
                 case SOUTH:uncovered1 = map.uncoverACell(this.x - i, this.y + 1, this);break;
@@ -398,7 +398,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 1);
         if (d == -1) return;
         if (d == 100) {
-            paintFLFree(map, 4);
+            paintFLFree(map, 1);
         }
         else {
             paintFLWall(map, d);
@@ -410,7 +410,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 1);
         if (d == -1) return;
         if (d == 100) {
-            paintFMFree(map, 4);
+            paintFMFree(map, 1);
         }
         else {
             paintFMWall(map, d);
@@ -422,7 +422,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 1);
         if (d == -1) return;
         if (d == 100) {
-            paintFRFree(map, 4);
+            paintFRFree(map, 1);
         }
         else {
             paintFRWall(map, d);
@@ -434,7 +434,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 3);
         if (d == -1) return;
         if (d == 300) {
-            paintLSFree(map, 9);
+            paintLSFree(map, 1);
         }
         else {
             paintLSWall(map, d);
@@ -442,15 +442,15 @@ public class MDPRobot implements RobotData, MapData {
         }
     }
 
-    public void senseRU(CoveredMap map, int distance) {
+    public void senseRS(CoveredMap map, int distance) {
         int d = checkObstacle(distance, 2);
         if (d == -1) return;
         if (d == 200) {
-            paintRUFree(map, 4);
+            paintRSFree(map, 1);
         }
         else {
-            paintRUWall(map, d);
-            paintRUFree(map, d);
+            paintRSWall(map, d);
+            paintRSFree(map, d);
         }
     }
 
@@ -502,12 +502,12 @@ public class MDPRobot implements RobotData, MapData {
         }
     }
 
-    void paintRUWall(CoveredMap map, int distance) {
+    void paintRSWall(CoveredMap map, int distance) {
         switch (this.direction) {
-            case EAST:map.setExploredMap(this, this.x + 1, this.y + distance + 1, WALL, distance);break;
-            case SOUTH:map.setExploredMap(this, this.x - distance - 1, this.y + 1, WALL, distance); break;
-            case WEST: map.setExploredMap(this, this.x - 1, this.y - distance - 1, WALL, distance);break;
-            case NORTH:map.setExploredMap(this, this.x + distance + 1, this.y - 1, WALL, distance); break;
+            case EAST:map.setExploredMap(this, this.x, this.y + distance + 1, WALL, distance);break;
+            case SOUTH:map.setExploredMap(this, this.x - distance - 1, this.y, WALL, distance); break;
+            case WEST: map.setExploredMap(this, this.x, this.y - distance - 1, WALL, distance);break;
+            case NORTH:map.setExploredMap(this, this.x + distance + 1, this.y, WALL, distance); break;
         }
     }
 
@@ -617,35 +617,35 @@ public class MDPRobot implements RobotData, MapData {
         }
     }
 
-    void paintRUFree(CoveredMap map, int distance) {
+    void paintRSFree(CoveredMap map, int distance) {
         
         for (int i = 1; i < distance-1; i++) {
             switch (this.direction) {
                 case EAST:
                     if (x + 1 < COLS - 1 && y + i + 1 < ROWS - 1) {
-                         if (((map.getNewCell())[this.y + 1 + 1][this.x + 1]).getColor() == WALL)
+                         if (((map.getNewCell())[this.y + 1 + 1][this.x]).getColor() == WALL)
                             isRightChanged = true;
-                        map.setExploredMap(this, this.x + 1, this.y + i + 1, FREE, i);
+                        map.setExploredMap(this, this.x, this.y + i + 1, FREE, i);
                     }
                     break;
                 case SOUTH:
                     if (x - i - 1 > 0 && y + 1 < ROWS - 1) {
-                     if (((map.getNewCell())[this.y  + 1][this.x -1- 1]).getColor() == WALL)
+                     if (((map.getNewCell())[this.y][this.x -1- 1]).getColor() == WALL)
                             isRightChanged = true;
-                        map.setExploredMap(this, this.x - i - 1, this.y + 1, FREE, i);
+                        map.setExploredMap(this, this.x - i - 1, this.y, FREE, i);
                     }
                     break;
                 case WEST:
                     if (x - 1 > 0 && y - i - 1 > 0)
-                       if (((map.getNewCell())[this.y -1- 1][this.x - 1]).getColor() == WALL)
+                       if (((map.getNewCell())[this.y -1- 1][this.x]).getColor() == WALL)
                             isRightChanged = true;
-                        map.setExploredMap(this, this.x - 1, this.y - i - 1, FREE, i);
+                        map.setExploredMap(this, this.x, this.y - i - 1, FREE, i);
                     break;
                 case NORTH:
                     if (x + i + 1 < COLS - 1 && y - 1 > 0){
-                        if (((map.getNewCell())[this.y - 1][this.x + 1+ 1]).getColor() == WALL)
+                        if (((map.getNewCell())[this.y][this.x + 1+ 1]).getColor() == WALL)
                             isRightChanged = true;
-                        map.setExploredMap(this, this.x + i + 1, this.y - 1, FREE, i);
+                        map.setExploredMap(this, this.x + i + 1, this.y, FREE, i);
                     }
                     break;
             }
@@ -757,8 +757,10 @@ public class MDPRobot implements RobotData, MapData {
     public int getTypeAlignment(CoveredMap map) {
 
         Cell [][]cells = map.getNewCell();
-        if ( (this.x == 2 && this.y == 2) || (this.x == 2 && this.y == 19)
-                || (this.x == 14 && this.y == 2) || (this.x == 14 && this.y == 19) )
+        if ( (this.x == 2 && this.y == 2 && (this.direction == NORTH || this.direction == WEST) ) ||
+             (this.x == 2 && this.y == 19 && (this.direction == SOUTH || this.direction == WEST) ) ||
+             (this.x == 14 && this.y == 2 && (this.direction == NORTH || this.direction == EAST) ) ||
+             (this.x == 14 && this.y == 19 && (this.direction == SOUTH || this.direction == EAST) ) )
             return 3;
         switch (this.direction) {
             case NORTH:
