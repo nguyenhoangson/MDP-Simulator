@@ -39,7 +39,7 @@ final public class RaceMain {
         } while (!connected);
         System.out.println("connection created!");
         //String[] robotInfo = read().split(",");
-        String[] robotInfo = "14,19,4".split(",");
+        String[] robotInfo = "2,19,4".split(",");
 
         // Map creation
         RealMap real = new RealMap();

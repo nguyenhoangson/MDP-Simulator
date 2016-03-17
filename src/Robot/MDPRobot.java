@@ -366,30 +366,18 @@ public class MDPRobot implements RobotData, MapData {
     int checkObstacle(int distance, int type) {
         switch (type) {
             case 1:
-                if (distance < 7) return -1;
-                else if (distance <= 11) return 1;
-                /*else if (distance <= 22) return 2;
-                else if (distance <= 32) return 3; */
+                if (distance < 0) return 100;
+                else if (distance <= 10) return 1;
+                else if (18 <= distance && distance <= 20) return 2;
+                //else if (distance <= 32) return 3; */
                 else return 100;
 
             case 2:
-                if (distance < 7) return -1;
-                else if (distance <= 9) return 1;
-                /*else if (distance <= 19) return 2;
-                else if (distance <= 30) return 3; */
+                if (distance < 0) return 200;
+                else if (distance <= 10) return 1;
+                else if (18 <= distance && distance <= 20) return 2;
+                //else if (distance <= 30) return 3; */
                 else return 200;
-
-            case 3:
-                if (distance < 4) return -1;
-                else if (distance <= 7) return 1;
-                /*else if (distance <= 15) return 2;
-                else if (distance <= 26) return 3;
-                else if (distance <= 36) return 4;
-                else if (distance <= 46) return 5;
-                else if (distance <= 56) return 6;
-                else if (distance <= 66) return 7;
-                else if (distance <= 76) return 8; */
-                else return 300;
         }
         return -1;
     }
@@ -398,7 +386,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 1);
         if (d == -1) return;
         if (d == 100) {
-            paintFLFree(map, 1);
+            paintFLFree(map, 3);
         }
         else {
             paintFLWall(map, d);
@@ -410,7 +398,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 1);
         if (d == -1) return;
         if (d == 100) {
-            paintFMFree(map, 1);
+            paintFMFree(map, 3);
         }
         else {
             paintFMWall(map, d);
@@ -422,7 +410,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 1);
         if (d == -1) return;
         if (d == 100) {
-            paintFRFree(map, 1);
+            paintFRFree(map, 3);
         }
         else {
             paintFRWall(map, d);
@@ -431,10 +419,10 @@ public class MDPRobot implements RobotData, MapData {
     }
 
     public void senseLS(CoveredMap map, int distance) {
-        int d = checkObstacle(distance, 3);
+        int d = checkObstacle(distance, 2);
         if (d == -1) return;
-        if (d == 300) {
-            paintLSFree(map, 1);
+        if (d == 200) {
+            paintLSFree(map, 3);
         }
         else {
             paintLSWall(map, d);
@@ -446,23 +434,11 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 2);
         if (d == -1) return;
         if (d == 200) {
-            paintRSFree(map, 1);
+            paintRSFree(map, 3);
         }
         else {
             paintRSWall(map, d);
             paintRSFree(map, d);
-        }
-    }
-
-    public void senseRL(CoveredMap map, int distance) {
-        int d = checkObstacle(distance, 2);
-        if (d == -1) return;
-        if (d == 200) {
-            paintRLFree(map, 4);
-        }
-        else {
-            paintRLWall(map, d);
-            paintRLFree(map, d);
         }
     }
 
@@ -754,14 +730,92 @@ public class MDPRobot implements RobotData, MapData {
         return -1;
     }
 
+    public boolean wallInFront(CoveredMap map) {
+        Cell [][]cells = map.getNewCell();
+        switch (this.direction) {
+            case NORTH:
+                if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL
+                        && cells[y - 2][x + 1].getColor() == WALL)
+                    return true;
+                break;
+            case SOUTH:
+                if (cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL
+                        && cells[y + 2][x + 1].getColor() == WALL)
+                    return true;
+                break;
+            case EAST:
+                if (cells[y - 1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL
+                        && cells[y + 1][x + 2].getColor() == WALL)
+                    return true;
+                break;
+            case WEST:
+                if (cells[y - 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL
+                        && cells[y + 1][x - 2].getColor() == WALL)
+                    return true;
+                break;
+        }
+        return false;
+    }
+
+    public boolean wallLeft(CoveredMap map) {
+        Cell [][]cells = map.getNewCell();
+        switch (this.direction) {
+            case NORTH:
+                if (cells[y - 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL
+                        && cells[y + 1][x - 2].getColor() == WALL)
+                    return true;
+                break;
+            case SOUTH:
+                if (cells[y - 1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL
+                        && cells[y + 1][x + 2].getColor() == WALL)
+                    return true;
+                break;
+            case EAST:
+                if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL
+                        && cells[y - 2][x + 1].getColor() == WALL)
+                    return true;
+                break;
+            case WEST:
+                if (cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL
+                        && cells[y + 2][x + 1].getColor() == WALL)
+                    return true;
+                break;
+        }
+        return false;
+    }
+
+    public boolean wallRight(CoveredMap map) {
+        Cell [][]cells = map.getNewCell();
+        switch (this.direction) {
+            case NORTH:
+                if (cells[y - 1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL
+                        && cells[y + 1][x + 2].getColor() == WALL)
+                    return true;
+                break;
+            case SOUTH:
+                if (cells[y - 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL
+                        && cells[y + 1][x - 2].getColor() == WALL)
+                    return true;
+                break;
+            case EAST:
+                if (cells[y + 2][x - 1].getColor() == WALL && cells[y + 2][x].getColor() == WALL
+                        && cells[y + 2][x + 1].getColor() == WALL)
+                    return true;
+                break;
+            case WEST:
+                if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL
+                        && cells[y - 2][x + 1].getColor() == WALL)
+                    return true;
+                break;
+        }
+        return false;
+    }
+
     public int getTypeAlignment(CoveredMap map) {
 
         Cell [][]cells = map.getNewCell();
-        if ( (this.x == 2 && this.y == 2 && (this.direction == NORTH || this.direction == WEST) ) ||
-             (this.x == 2 && this.y == 19 && (this.direction == SOUTH || this.direction == WEST) ) ||
-             (this.x == 14 && this.y == 2 && (this.direction == NORTH || this.direction == EAST) ) ||
-             (this.x == 14 && this.y == 19 && (this.direction == SOUTH || this.direction == EAST) ) )
-            return 3;
+        if (wallInFront(map) && wallRight(map))
+            return ALIGNMENT_3;
         switch (this.direction) {
             case NORTH:
                 if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL) return ALIGNMENT_1;

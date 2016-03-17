@@ -63,7 +63,7 @@ public class Client {
         //array for storing distances in order: FL, FM, FR, LS, RS, RL
         if(isForLocalTesting) return "1000,1000,1000,1000,1000,1000";
         System.out.println("Trying to read: ");
-        String inStr;
+        String inStr = null;
         Scanner sc;
         try {
             sc = new Scanner(new InputStreamReader(socket.getInputStream()));
@@ -88,17 +88,13 @@ public class Client {
         }
 
         try{
-            Thread.sleep(4000);
+            Thread.sleep(1000);
 
             // Only send the message when connection is ready
-            for(int i = 0; i < 10; i++){
-                testClient.write("D\n");
-            }
-
-            System.out.println("Trying to read from RPi...");
-            String readFromRPi = testClient.read();
-            System.out.println(readFromRPi);
-
+            String s1 = "ffffffffffffffffffffffffffffffbffffffffffffffffffffffffffffffffffffffffeffff";
+            String s2 = "00000000000004001000403c03800400000000e00100e22004007000000e000000000004443";
+            writeToAndroid("MDF1:" + s1);
+            writeToAndroid("MDF2:" + s2);
         } catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }

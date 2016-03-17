@@ -67,7 +67,7 @@ public class CoveredMap extends JPanel implements MapData, RobotData {
                 newCell[j][i].setColor(color);
                 if (color == WALL && !Client.isForLocalTesting)
                     Race.sendObstacleData(i, j, true);
-                if (color == FREE && !Client.isForLocalTesting) {
+                if (color == FREE && !Client.isForLocalTesting && newCell[j][i].getColor() == WALL) {
                     Race.sendObstacleData(i, j, false);
                 }
             }

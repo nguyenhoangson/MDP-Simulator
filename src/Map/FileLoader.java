@@ -143,7 +143,7 @@ public class FileLoader {
             bw.write(hexString);
             toN += hexString;
         }
-        Client.writeToAndroid("MDF:" + toN);
+        Client.writeToAndroid("MDF1:" + toN);
         toN = "";
         bw.write("\n\nExplored part 2:\n");
 
@@ -189,7 +189,7 @@ public class FileLoader {
             bw.write(hexString);
             toN += hexString;
         }
-        Client.writeToAndroid("MDF:" + toN);
+        Client.writeToAndroid("MDF2:" + toN);
         bw.write("\n");
         bw.close();
 

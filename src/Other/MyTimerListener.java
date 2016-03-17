@@ -30,6 +30,10 @@ public class MyTimerListener implements ActionListener {
         this.count = Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
     }
 
+    public void setTimer(int Seconds) {
+        this.count = Seconds;
+    }
+
     public int getTimer() {
         return count;
     }
