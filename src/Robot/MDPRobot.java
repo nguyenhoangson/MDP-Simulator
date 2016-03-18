@@ -422,7 +422,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 2);
         if (d == -1) return;
         if (d == 200) {
-            paintLSFree(map, 3);
+            paintLSFree(map, 2);
         }
         else {
             paintLSWall(map, d);
@@ -434,7 +434,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 2);
         if (d == -1) return;
         if (d == 200) {
-            paintRSFree(map, 3);
+            paintRSFree(map, 2);
         }
         else {
             paintRSWall(map, d);
