@@ -368,14 +368,14 @@ public class MDPRobot implements RobotData, MapData {
             case 1:
                 if (distance < 0) return 100;
                 else if (distance <= 10) return 1;
-                else if (18 <= distance && distance <= 20) return 2;
+                else if (15 <= distance && distance <= 21) return 2;
                 //else if (distance <= 32) return 3; */
                 else return 100;
 
             case 2:
                 if (distance < 0) return 200;
                 else if (distance <= 10) return 1;
-                else if (18 <= distance && distance <= 20) return 2;
+                else if (16 <= distance && distance <= 20) return 2;
                 //else if (distance <= 30) return 3; */
                 else return 200;
         }
@@ -422,7 +422,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 2);
         if (d == -1) return;
         if (d == 200) {
-            paintLSFree(map, 2);
+            paintLSFree(map, 3);
         }
         else {
             paintLSWall(map, d);
@@ -434,7 +434,7 @@ public class MDPRobot implements RobotData, MapData {
         int d = checkObstacle(distance, 2);
         if (d == -1) return;
         if (d == 200) {
-            paintRSFree(map, 2);
+            paintRSFree(map, 3);
         }
         else {
             paintRSWall(map, d);

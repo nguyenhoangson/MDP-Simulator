@@ -67,9 +67,8 @@ public class CoveredMap extends JPanel implements MapData, RobotData {
                 newCell[j][i].setColor(color);
                 if (color == WALL && !Client.isForLocalTesting)
                     Race.sendObstacleData(i, j, true);
-                if (color == FREE && !Client.isForLocalTesting && newCell[j][i].getColor() == WALL) {
+                if (color == FREE && !Client.isForLocalTesting)
                     Race.sendObstacleData(i, j, false);
-                }
             }
             if(newCell[j][i].getColor() == ROBOTB || newCell[j][i].getColor() == PATH)  
                 myAStarMap2[j][i] = true; // for walkable

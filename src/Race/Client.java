@@ -90,13 +90,12 @@ public class Client {
         try{
             Thread.sleep(1000);
 
-            // Only send the message when connection is ready
-            String s1 = "ffffffffffffffffffffffffffffffbffffffffffffffffffffffffffffffffffffffffeffff";
-            String s2 = "00000000000004001000403c03800400000000e00100e22004007000000e000000000004443";
-            writeToAndroid("MDF1:" + s1);
-            writeToAndroid("MDF2:" + s2);
+            writeToArduino("W6#D#W4#A#W11#D#W9#");
+
+
         } catch (InterruptedException e){
             Thread.currentThread().interrupt();
         }
+
     }
 }

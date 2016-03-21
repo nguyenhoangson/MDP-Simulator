@@ -106,7 +106,7 @@ public class FastestPath implements RobotData, MapData {
         
       
         List<PathFinder.Node> path = getAStarPath(robot.getPresetWayPt().get(0));
-        ArrayList<Integer> arrL = getMoveMent(path, robot.getDirection());
+        ArrayList<Integer> arrL = getMovement(path, robot.getDirection());
         System.out.println("arrL size: " + arrL.size());
         do {
             try {
@@ -137,7 +137,7 @@ public class FastestPath implements RobotData, MapData {
                         }
                     }
                 }
-                arrL = getMoveMent(path, robot.getDirection());
+                arrL = getMovement(path, robot.getDirection());
                 
             } else if (arrL.get(0) == TURNLEFT) {
                 this.robot.turnLeft();
@@ -293,10 +293,10 @@ public class FastestPath implements RobotData, MapData {
         return path;
     }
     
-   static public ArrayList<Integer> getMoveMent(List<PathFinder.Node> path, int direction) throws Exception {
+   static public ArrayList<Integer> getMovement(List<PathFinder.Node> path, int direction) throws Exception {
         //first assume the first action is move forward to get to the second coordinator
         ArrayList<Integer> action = new ArrayList<Integer>();
-        
+
         for (int i = 0; i < path.size() - 1; i++) {
             int moveAction = convert(path.get(i), path.get(i + 1), direction);
             //  System.out.println("action: " + moveAction);
@@ -319,9 +319,9 @@ public class FastestPath implements RobotData, MapData {
                 direction = ((direction - 2 + 4) % 4) + 1;
             }
             action.add(MOVEFORWARD);
-            
+
         }
-        
+
         return action;
     }
     
