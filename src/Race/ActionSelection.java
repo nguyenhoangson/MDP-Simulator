@@ -13,7 +13,6 @@ import Robot.MDPRobot;
  * @author TQN
  */
 
-// TODO: Make the mapping more proper
 
 public class ActionSelection {
     static public int dataReliablilty = 1;

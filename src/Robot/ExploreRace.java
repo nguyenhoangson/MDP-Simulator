@@ -91,7 +91,7 @@ public class ExploreRace implements RobotData, MapData {
             try {
                 Thread.sleep((long) (1000 / stepsPerSec));
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
 
@@ -121,7 +121,7 @@ public class ExploreRace implements RobotData, MapData {
                     try {
                         Thread.sleep((long) 10000);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
+
                         e.printStackTrace();
                     }
                 } 

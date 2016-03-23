@@ -36,6 +36,7 @@ import static Robot.RobotData.ALIGNMENT;
 import static Robot.RobotData.ALIGNMENT_1;
 import static Robot.RobotData.ALIGNMENT_2;
 import static Robot.RobotData.ALIGNMENT_3;
+import static Robot.RobotData.ALIGNMENT_4;
 import static Robot.RobotData.EAST;
 import static Robot.RobotData.MOVEFORWARD;
 import static Robot.RobotData.NORTH;
@@ -98,14 +99,9 @@ public class Race {
 
     public static boolean preCali = false;
     public static boolean firstTime = true;
+    public static String preAction = "";
 
     public void mainLoop() throws Exception {
-        final JLabel myLabel = new JLabel("thisLabel");
-        //pass the label into the MyListener constructor
-        final MyTimerListener listener = new MyTimerListener(myLabel);
-        //the timer fires every 1000 MS (1 second)
-        //when it does, it calls the actionPerformed() method of MyListener
-        final javax.swing.Timer timer = new javax.swing.Timer(1000, listener);
 
         int ct = 0;
         loopCounter = 0;
@@ -244,7 +240,6 @@ public class Race {
                     robot.updateCalibrationCounter();
                 }
             }
-
             switch (actionList.get(0)) {
                 case MOVEFORWARD:
                     moveForward(1);
@@ -276,6 +271,7 @@ public class Race {
                     System.out.println("unknown action in actionList");
                     break;
             }
+
             if (loopCounter % 5 == 0) needToCalibrate = true;
             if (needToCalibrate) {
                 System.out.println("Need to calibrate");
@@ -290,14 +286,8 @@ public class Race {
                 responded = true;
             }
 
+
             actionList.remove(0);
-            
-            /* if(loopCounter > 25){
-                loopCounter = 0;
-                infinLoopCounter++;
-                neededTobreakLoop = true;
-                map.resetSensePriory();
-            } */
 
             if (!isFastPath && robot.getX() == 14 && robot.getY() == 2) {
                     isTracking = true;
@@ -862,6 +852,7 @@ public class Race {
     void turnLeft() {
         preCali = false;
         char c = 'A';
+        preAction = "" + c;
         robot.turnLeft();
         writeToArduino("" + c);
         writeToAndroid("" + c);
@@ -871,6 +862,7 @@ public class Race {
         preCali = false;
         char c = 'D';
         robot.turnRight();
+        preAction = "" + c;
         writeToArduino("" + c);
         writeToAndroid("" + c);
     }
@@ -881,9 +873,10 @@ public class Race {
         System.out.println("Loop counter : " + loopCounter);
         for (int i = 1; i<=nSteps; i++) writeToArduino("W");
         for (int i = 1; i<=nSteps; i++) writeToAndroid("W");
-
+        preAction = "";
         for(int i =0; i < nSteps; i++) {
             robot.moveForward();
+            preAction += "W";
             if(isFastPath)this.map.setColor(robot.getX(), robot.getY(), PATH);
             else {
                 this.map.setColor(robot.getX(), robot.getY(), ROBOTB);
@@ -905,12 +898,14 @@ public class Race {
 
     void doAlignment(int type) {
         if (type == -1) return;
-        //loopCounter = 1;
         char c = 'C';
         if(type == ALIGNMENT_1) c = 'B';
         if(type == ALIGNMENT_2) c = 'V';
         if(type == ALIGNMENT_3) c = 'C';
+        if(type == ALIGNMENT_4) c = 'N';
         writeToArduino("" + c);
+        preAction = "" + c;
+        loopCounter = 1;
         preCali = true;
     }
 
@@ -921,11 +916,21 @@ public class Race {
 
     public String waitForResponse() {
         System.out.println("Waiting for responses");
+        long startTime = System.currentTimeMillis(), endTime, totalTime;
         while (true) {
-            String rec = read();
-            if (rec != null && rec != "") return rec;
+            if (hasNext()) {
+                String rec = read();
+                if (!(rec == null || "".equals(rec))) {
+                    return rec;
+                }
+            }
+            endTime = System.currentTimeMillis();
+            totalTime = endTime - startTime;
+            if (totalTime >= 1000) {
+                writeToArduino(preAction);
+                startTime = System.currentTimeMillis();
+            }
         }
-
     }
 }
 

@@ -18,7 +18,8 @@ public interface RobotData {
         
     int ALIGNMENT_1 = 1; // front alignment
     int ALIGNMENT_2 = 2; // right alignment
-    int ALIGNMENT_3 = 3;
+    int ALIGNMENT_3 = 3; // corner alignment
+    int ALIGNMENT_4 = 4; // left alighnment
         
 
 }

@@ -93,7 +93,7 @@ public class Explore implements RobotData, MapData {
             try {
                 Thread.sleep((long) (1000/stepsPerSec));
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
 

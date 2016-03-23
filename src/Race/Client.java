@@ -59,6 +59,16 @@ public class Client {
         write(toWrite);
     }
 
+    public static boolean hasNext() {
+        try {
+            Scanner sc = new Scanner(new InputStreamReader(socket.getInputStream()));
+            return sc.hasNext();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
     public static String read() {
         //array for storing distances in order: FL, FM, FR, LS, RS, RL
         if(isForLocalTesting) return "1000,1000,1000,1000,1000,1000";
@@ -79,21 +89,19 @@ public class Client {
     }
 
     public static void main (String... args) throws InterruptedException {
-        Client testClient = new Client();
 
-        boolean connection = testClient.setUp(ip,port);
+        boolean connection = setUp(ip,port);
 
-        while(connection == false){
-            connection = testClient.setUp(ip, port);
+        while(!connection){
+            connection = setUp(ip, port);
         }
 
-        try{
+        try {
             Thread.sleep(1000);
 
             writeToArduino("W6#D#W4#A#W11#D#W9#");
 
-
-        } catch (InterruptedException e){
+        } catch (Exception e){
             Thread.currentThread().interrupt();
         }
 

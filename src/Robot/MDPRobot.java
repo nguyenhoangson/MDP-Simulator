@@ -657,6 +657,13 @@ public class MDPRobot implements RobotData, MapData {
 
     // Get the next move??
     public int getMovement(CoveredMap map) {
+        if (previousAction != TURNRIGHT && previousAction != TURNLEFT
+                && map.getNewCell()[y - 1][x + 2].getColor() != WALL
+                && map.getNewCell()[y][x + 2].getColor() == WALL
+                && map.getNewCell()[y + 1][x + 2].getColor() == WALL) {
+            previousAction = TURNRIGHT;
+            return TURNRIGHT;
+        }
         switch (direction) {
             case NORTH:
                 if (previousAction != TURNRIGHT
@@ -813,10 +820,16 @@ public class MDPRobot implements RobotData, MapData {
 
     public int getTypeAlignment(CoveredMap map) {
 
-        Cell [][]cells = map.getNewCell();
+        //Cell [][]cells = map.getNewCell();
         if (wallInFront(map) && wallRight(map))
             return ALIGNMENT_3;
-        switch (this.direction) {
+        else if (wallInFront(map))
+            return ALIGNMENT_1;
+        else if (wallRight(map))
+            return ALIGNMENT_2;
+        else if (wallLeft(map))
+            return ALIGNMENT_4;
+        /* switch (this.direction) {
             case NORTH:
                 if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL) return ALIGNMENT_1;
                 else if (cells[y - 1][x + 2].getColor() == WALL && cells[y +1][x + 2].getColor() == WALL && cells[y][x + 2].getColor() == WALL) return ALIGNMENT_2;
@@ -833,7 +846,7 @@ public class MDPRobot implements RobotData, MapData {
                 if (cells[y - 1][x - 2].getColor() == WALL && cells[y + 1][x - 2].getColor() == WALL && cells[y][x - 2].getColor() == WALL) return ALIGNMENT_1;
                 else if (cells[y - 2][x - 1].getColor() == WALL && cells[y - 2][x + 1].getColor() == WALL && cells[y - 2][x].getColor() == WALL) return ALIGNMENT_2;
                 break;
-        }
+        } */
         return -1;
     }
     
