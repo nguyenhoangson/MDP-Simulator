@@ -59,14 +59,14 @@ public class Client {
         write(toWrite);
     }
 
-    public static boolean hasNext() {
+    public static String hasNext() {
         try {
             Scanner sc = new Scanner(new InputStreamReader(socket.getInputStream()));
-            return sc.hasNext();
+            if (sc.hasNext()) return sc.nextLine();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return false;
+        return null;
     }
 
     public static String read() {

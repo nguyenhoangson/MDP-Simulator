@@ -918,15 +918,13 @@ public class Race {
         System.out.println("Waiting for responses");
         long startTime = System.currentTimeMillis(), endTime, totalTime;
         while (true) {
-            if (hasNext()) {
-                String rec = read();
-                if (!(rec == null || "".equals(rec))) {
-                    return rec;
-                }
-            }
+            String temp = hasNext();
+            if (temp != null) return temp;
             endTime = System.currentTimeMillis();
             totalTime = endTime - startTime;
+            System.out.println("Total time: " + totalTime);
             if (totalTime >= 1000) {
+                System.out.println("Write again");
                 writeToArduino(preAction);
                 startTime = System.currentTimeMillis();
             }
