@@ -74,16 +74,16 @@ public class Race {
     boolean isfirstRepeatPath = false;
     int infinLoopCounter = 0;
 
-    public static final boolean noBT = false;
+    public static boolean noBT = false;
 
     int directionToBash = -1;
     boolean directionToBashFound = false;
 
 
-    public Race(MDPRobot bot, CoveredMap coveredMap) {
+    public Race(MDPRobot bot, CoveredMap coveredMap, boolean noBluetooth) {
         this.robot = bot;
         this.map = coveredMap;
-        
+        noBT = noBluetooth;
          for (int i = robot.getY()- 1; i < robot.getY() + 2; i++) {
             for (int j = robot.getX() - 1; j < robot.getX() + 2; j++) {
                     coveredMap.setExploredMap(robot,j,i,FREE,0);
@@ -157,6 +157,7 @@ public class Race {
                     turnLeft();
                 }
                 while (true) {
+                    if (noBT) break;
                     if (read().equals("RACE")) break;
                 }
                 isPreparingFastPath = true;

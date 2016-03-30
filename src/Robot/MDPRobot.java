@@ -657,10 +657,18 @@ public class MDPRobot implements RobotData, MapData {
 
     // Get the next move??
     public int getMovement(CoveredMap map) {
-        if (previousAction != TURNRIGHT && previousAction != TURNLEFT
+        if (direction == NORTH && previousAction != TURNRIGHT && previousAction != TURNLEFT
                 && map.getNewCell()[y - 1][x + 2].getColor() != WALL
                 && map.getNewCell()[y][x + 2].getColor() == WALL
                 && map.getNewCell()[y + 1][x + 2].getColor() == WALL) {
+            previousAction = TURNRIGHT;
+            return TURNRIGHT;
+        }
+        if (direction == EAST && previousAction != TURNRIGHT && previousAction != TURNLEFT
+                && y + 2 <= 20
+                && map.getNewCell()[y + 2][x + 1].getColor() != WALL
+                && map.getNewCell()[y + 2][x - 1].getColor() == WALL
+                && map.getNewCell()[y + 2][x].getColor() == WALL) {
             previousAction = TURNRIGHT;
             return TURNRIGHT;
         }

@@ -85,7 +85,7 @@ final public class RaceMain {
             System.out.println(e.getMessage());
         }
 
-        Race race = new Race(bot, map);
+        Race race = new Race(bot, map, false);
         race.mainLoop();
 
 
