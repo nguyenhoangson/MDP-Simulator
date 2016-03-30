@@ -816,8 +816,8 @@ public class Race {
             }
             if (mSteps>0) {
                 String tempStr = "";
-                if (mSteps > 13) {
-                    tempStr = "W" + (13) + "#" + "W" + (mSteps-13) + "#";
+                if (mSteps > 10) {
+                    tempStr = "W" + (10) + "#" + "W" + (mSteps-10) + "#";
                 }
                 else
                     tempStr = "W" + mSteps + "#";
