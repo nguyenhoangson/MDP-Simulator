@@ -99,7 +99,7 @@ public class Client {
         try {
             Thread.sleep(1000);
 
-            writeToArduino("W6#D#W4#A#W11#D#W9#");
+            writeToArduino("W#D#W5#A#W6#");
 
         } catch (Exception e){
             Thread.currentThread().interrupt();

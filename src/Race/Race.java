@@ -153,6 +153,10 @@ public class Race {
                     isFastPath = true;
                     isEnding = false;
                 }
+                while (robot.getDirection() != SOUTH) {
+                    turnLeft();
+                }
+                doAlignment(ALIGNMENT_3);
                 while (robot.getDirection() != NORTH) {
                     turnLeft();
                 }
