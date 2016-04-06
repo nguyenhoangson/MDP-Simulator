@@ -160,12 +160,19 @@ public class Race {
                 while (robot.getDirection() != NORTH) {
                     turnLeft();
                 }
+                doAlignment(ALIGNMENT_4);
+                isPreparingFastPath = true;
+                fastPathOptimization(); //Do what?
+
+                String pS = getFastPathActionList(); //Shortest Path Finding
+                System.out.println("Action list: " + pS);
                 while (true) {
                     if (noBT) break;
                     if (read().equals("RACE")) break;
                 }
-                isPreparingFastPath = true;
-                robot.enableCalibration();
+                writeToArduino(pS);
+                return;
+                //robot.enableCalibration();
             }
 
             // Start finding out the shortest path
@@ -820,8 +827,8 @@ public class Race {
             }
             if (mSteps>0) {
                 String tempStr = "";
-                if (mSteps > 10) {
-                    tempStr = "W" + (10) + "#" + "W" + (mSteps-10) + "#";
+                if (mSteps > 13) {
+                    tempStr = "W" + (13) + "#" + "W" + (mSteps-13) + "#";
                 }
                 else
                     tempStr = "W" + mSteps + "#";
